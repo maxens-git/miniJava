@@ -1,0 +1,10 @@
+{
+    "java.project.sourcePaths": [
+        "src"
+    ],
+    "java.project.referencedLibraries": [
+        "tools/antlr-4.13.1-complete.jar",
+        "tools/commons-text-1.9.jar",
+        "tools/commons-lang3-3.12.0.jar"
+    ]
+}
