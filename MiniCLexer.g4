@@ -1,7 +1,7 @@
-lexer grammar MiniJavaLexer;
+lexer grammar MiniCLexer;
 
 @header {
-package fr.n7.stl.minijava.parser;
+package fr.n7.stl.minic.parser;
 }
 
 Egal: '=';
@@ -19,24 +19,14 @@ PointVirgule: ';';
 Afficher: 'print';
 Si: 'if';
 Sinon: 'else';
+TantQue: 'while'; 
 Retour: 'return';
-TantQue: 'while';
+DefinitionConstante: 'const';
+DefinitionType: 'typedef';
+Enregistrement: 'struct';
+Enumeration: 'enum';
 Nouveau: 'new';
-
-// Ajout miniJava
-Classe: 'class';
-Herite: 'extends';
-Public: 'public';
-Prive: 'private';
-DeClasse: 'static';
-Definitif: 'final';
-Moi: 'this';
-Super: 'super';
-// ClassePrincipale: 'Main';
-MethodePrincipale: 'main';
-Abstrait: 'abstract';
-Protege: 'protected';
-// Fin de l'ajout miniJava
+Principal: 'main';
 
 // Operateurs
 // Par défaut, les opérateurs sont associatifs à gauche
@@ -68,12 +58,12 @@ TypeVide: 'void';
 Vrai: 'true';
 Faux: 'false';
 Nul: 'null';
-
+Premier: 'fst';
+Second: 'snd';
 Caractere: '\'' . '\'';
 Chaine: '"' .*? '"';
 
-Underscore: '_';
-Identificateur: ([a-zA-Z]|Underscore)([a-zA-Z_0-9]|Underscore)*;
+Identificateur: [a-zA-Z][a-zA-Z_0-9]*;
 Entier: '0' | ([1-9][0-9]*);
 Flottant: Entier '.' Entier;
 

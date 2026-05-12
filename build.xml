@@ -18,8 +18,8 @@
 		<java classname="org.antlr.v4.Tool" classpath="tools/antlr-4.13.1-complete.jar:$CLASSPATH">
 			<arg value="-o" />
             <arg value="${java}/fr/n7/stl/minic/parser" />
-            <arg value="MiniJavaLexer.g4" />
-            <arg value="MiniJavaParser.g4" />
+            <arg value="MiniCLexer.g4" />
+            <arg value="MiniCParser.g4" />
 		</java>
 	</target>
 

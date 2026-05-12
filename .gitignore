@@ -1,3 +1,5 @@
 /bin/cls/**/*.class
 target/
-*.tam
+.~lock.miniC-2022-L34.ods#
+~$miniC-2022-L34.ods
+*.tam%            
