@@ -1,0 +1,6 @@
+CALL (SB) function_getA
+LOAD (1) 0[SB]
+SUBR IOut
+POP (0) 1
+HALT
+

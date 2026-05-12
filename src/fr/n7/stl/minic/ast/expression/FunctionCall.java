@@ -8,12 +8,20 @@ import java.util.List;
 
 import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.accessible.AccessibleExpression;
+import fr.n7.stl.minic.ast.expression.accessible.ConstantAccess;
+import fr.n7.stl.minic.ast.expression.accessible.VariableAccess;
+import fr.n7.stl.minic.ast.instruction.declaration.ConstantDeclaration;
 import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
+import fr.n7.stl.minic.ast.instruction.declaration.ParameterDeclaration;
+import fr.n7.stl.minic.ast.instruction.declaration.VariableDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
+import fr.n7.stl.minic.ast.type.AtomicType;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
+import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.util.Logger;
 
 /**
  * Abstract Syntax Tree node for a function call expression.
@@ -70,7 +78,26 @@ public class FunctionCall implements AccessibleExpression {
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics collect is undefined in FunctionCall.");
+		if (((HierarchicalScope<Declaration>)_scope).knows(this.name)) {
+			for (AccessibleExpression parametre : this.arguments) {
+				if(!parametre.collectAndPartialResolve(_scope)) {
+					return false;
+				};
+			}
+
+			Declaration _declaration = _scope.get(this.name);
+			if (_declaration instanceof FunctionDeclaration) {
+				this.function = (FunctionDeclaration) _declaration;
+				return true;
+			} else {
+				Logger.error("La déclaration n'est pas du bon type");
+				return false;
+			}
+		} else {
+			Logger.error("Variable : " + this.name + " is not defined.");
+			return false;
+		}
+		//throw new SemanticsUndefinedException( "Semantics collect is undefined in FunctionCall.");
 	}
 
 	/* (non-Javadoc)
@@ -78,7 +105,18 @@ public class FunctionCall implements AccessibleExpression {
 	 */
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics resolve is undefined in FunctionCall.");
+		if (((HierarchicalScope<Declaration>)_scope).knows(this.name)) {
+			for (AccessibleExpression parametre : this.arguments) {
+				if(!parametre.completeResolve(_scope)) {
+					return false;
+				};
+			}
+			return true;
+		} else {
+			Logger.error("Variable : " + this.name + " is not defined.");
+			return false;
+		}
+		//throw new SemanticsUndefinedException( "Semantics resolve is undefined in FunctionCall.");
 	}
 	
 	/* (non-Javadoc)
@@ -86,7 +124,15 @@ public class FunctionCall implements AccessibleExpression {
 	 */
 	@Override
 	public Type getType() {
-		throw new SemanticsUndefinedException( "Semantics getType is undefined in FunctionCall.");
+		for (int i = 0; i < this.arguments.size(); i++) {
+			if (!this.arguments.get(i).getType().compatibleWith(this.function.getParameters().get(i).getType())) {
+				Logger.error("Parameter " + this.arguments.get(i) + "has wrong type" + "(" + this.function.getParameters().get(i).getType() + ")");
+				return AtomicType.ErrorType;
+			}
+		}
+
+		return this.function.getType();
+		//throw new SemanticsUndefinedException( "Semantics getType is undefined in FunctionCall.");
 	}
 
 	/* (non-Javadoc)
@@ -94,7 +140,14 @@ public class FunctionCall implements AccessibleExpression {
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
+		Fragment f = _factory.createFragment();
+		for (AccessibleExpression arg : this.arguments) {
+			f.append(arg.getCode(_factory));
+		}
+		f.add(_factory.createCall("function_" + this.name, Register.SB));
 		throw new SemanticsUndefinedException( "Semantics getCode is undefined in FunctionCall.");
+		return f;
+		
 	}
 
 }
