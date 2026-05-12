@@ -1,0 +1,65 @@
+LOADL 0
+LOADL 10
+;(i == 0)
+;((i == 0) && (j == 0))
+LOAD (1) 1[SB]
+LOADL 0
+SUBR IEq
+;(j == 0)
+LOAD (1) 0[SB]
+LOADL 0
+SUBR IEq
+SUBR BAnd
+LOAD (1) 2[SB]
+SUBR IOut
+;(i == 0)
+;((i == 0) || (j == 0))
+LOAD (1) 1[SB]
+LOADL 0
+SUBR IEq
+;(j == 0)
+LOAD (1) 0[SB]
+LOADL 0
+SUBR IEq
+SUBR BOr
+LOAD (1) 3[SB]
+SUBR IOut
+;(i == 10)
+;((i == 10) && (j == 0))
+LOAD (1) 1[SB]
+LOADL 10
+SUBR IEq
+;(j == 0)
+LOAD (1) 0[SB]
+LOADL 0
+SUBR IEq
+SUBR BAnd
+JUMPIF (0) _sinon_ternaire_0
+LOADL 1
+JUMP _fin_ternaire_0
+_sinon_ternaire_0
+LOADL 0
+_fin_ternaire_0
+LOAD (1) 4[SB]
+SUBR IOut
+;(i == 10)
+;((i == 10) && (j < 0))
+LOAD (1) 1[SB]
+LOADL 10
+SUBR IEq
+;(j < 0)
+LOAD (1) 0[SB]
+LOADL 0
+SUBR ILss
+SUBR BAnd
+JUMPIF (0) _sinon_ternaire_1
+LOADL 1
+JUMP _fin_ternaire_1
+_sinon_ternaire_1
+LOADL 0
+_fin_ternaire_1
+LOAD (1) 5[SB]
+SUBR IOut
+POP (0) 6
+HALT
+

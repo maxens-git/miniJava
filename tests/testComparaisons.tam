@@ -1,0 +1,35 @@
+LOADL 5
+LOADL 10
+;(a < b)
+LOAD (1) 0[SB]
+LOAD (1) 1[SB]
+SUBR ILss
+SUBR IOut
+;(a > b)
+LOAD (1) 0[SB]
+LOAD (1) 1[SB]
+SUBR IGtr
+SUBR IOut
+;(a <= 5)
+LOAD (1) 0[SB]
+LOADL 5
+SUBR ILeq
+SUBR IOut
+;(b >= 10)
+LOAD (1) 1[SB]
+LOADL 10
+SUBR IGeq
+SUBR IOut
+;(a == 5)
+LOAD (1) 0[SB]
+LOADL 5
+SUBR IEq
+SUBR IOut
+;(a != b)
+LOAD (1) 0[SB]
+LOAD (1) 1[SB]
+SUBR INeq
+SUBR IOut
+POP (0) 2
+HALT
+

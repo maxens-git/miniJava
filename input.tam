@@ -1,0 +1,10 @@
+LOADL 1
+SUBR IOut
+;(x + 1)
+LOADL 1
+LOADL 1
+SUBR IAdd
+SUBR IOut
+POP (0) 0
+HALT
+

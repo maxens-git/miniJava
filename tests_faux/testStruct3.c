@@ -1,0 +1,7 @@
+typedef struct Point {int x; int y;} Point;
+
+void main() {
+    Point p = {1, 2};
+    p.x = true;
+    print p.x;
+}

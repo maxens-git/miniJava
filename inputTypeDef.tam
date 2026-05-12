@@ -1,0 +1,6 @@
+LOADL 99
+LOAD (1) 0[SB]
+LOADL 42
+POP (0) 3
+HALT
+

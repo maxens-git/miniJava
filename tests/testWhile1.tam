@@ -1,0 +1,39 @@
+LOADL 0
+LOADL 20
+;(i < j)
+;((i < j) && ((i + j) < 30))
+tant_que_0
+LOAD (1) 0[SB]
+LOAD (1) 1[SB]
+SUBR ILss
+;(i + j)
+;((i + j) < 30)
+LOAD (1) 0[SB]
+LOAD (1) 1[SB]
+SUBR IAdd
+LOADL 30
+SUBR ILss
+SUBR BAnd
+JUMPIF (0) fin_tant_que_0
+;(i + 2)
+LOAD (1) 0[SB]
+LOADL 2
+SUBR IAdd
+LOADA 0[SB]
+STOREI (1)
+;(j - 1)
+LOAD (1) 1[SB]
+LOADL 1
+SUBR ISub
+LOADA 1[SB]
+STOREI (1)
+LOAD (1) 0[SB]
+SUBR IOut
+LOAD (1) 1[SB]
+SUBR IOut
+POP (0) 0
+JUMP tant_que_0
+fin_tant_que_0
+POP (0) 2
+HALT
+

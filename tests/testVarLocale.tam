@@ -1,0 +1,18 @@
+LOADL 0
+LOAD (1) 0[SB]
+SUBR IOut
+;(i == 0)
+LOAD (1) 0[SB]
+LOADL 0
+SUBR IEq
+JUMPIF (0) _fin_si_0
+LOADL 10
+LOAD (1) 1[SB]
+SUBR IOut
+POP (0) 1
+_fin_si_0
+LOAD (1) 0[SB]
+SUBR IOut
+POP (0) 1
+HALT
+

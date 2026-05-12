@@ -1,0 +1,14 @@
+LOADL 1
+;(p + 1)
+LOAD (1) 0[SB]
+LOADL 1
+SUBR IAdd
+;(p - 1)
+LOAD (1) 0[SB]
+LOADL 1
+SUBR ISub
+LOAD (1) 1[SB]
+SUBR IOut
+POP (0) 3
+HALT
+

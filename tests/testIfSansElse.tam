@@ -1,0 +1,24 @@
+LOADL 3
+;(x > 0)
+LOAD (1) 0[SB]
+LOADL 0
+SUBR IGtr
+JUMPIF (0) _fin_si_0
+LOADL 1
+SUBR IOut
+POP (0) 0
+_fin_si_0
+;(x < 0)
+LOAD (1) 0[SB]
+LOADL 0
+SUBR ILss
+JUMPIF (0) _fin_si_1
+LOADL 0
+SUBR IOut
+POP (0) 0
+_fin_si_1
+LOAD (1) 0[SB]
+SUBR IOut
+POP (0) 1
+HALT
+

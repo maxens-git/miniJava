@@ -1,0 +1,25 @@
+;(17 / 5)
+LOADL 17
+LOADL 5
+SUBR IDiv
+SUBR IOut
+;(17 % 5)
+LOADL 17
+LOADL 5
+SUBR IMod
+SUBR IOut
+;(- 17)
+;((- 17) / 5)
+LOADL 17
+SUBR INeg
+LOADL 5
+SUBR IDiv
+SUBR IOut
+;(0 % 7)
+LOADL 0
+LOADL 7
+SUBR IMod
+SUBR IOut
+POP (0) 0
+HALT
+

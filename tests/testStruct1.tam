@@ -1,0 +1,8 @@
+LOADL 1
+LOADL 2
+LOAD (1) 0[SB]
+LOAD (1) 2[SB]
+SUBR IOut
+POP (0) 3
+HALT
+

@@ -1,0 +1,59 @@
+LOADL 5
+LOADL 1
+SUBR IMul
+SUBR MAlloc
+LOADL 0
+;(i < 5)
+tant_que_0
+LOAD (1) 1[SB]
+LOADL 5
+SUBR ILss
+JUMPIF (0) fin_tant_que_0
+;(i * i)
+LOAD (1) 1[SB]
+LOAD (1) 1[SB]
+SUBR IMul
+LOADA 0[SB]
+LOADI (1)
+LOADL 1
+LOAD (1) 1[SB]
+SUBR IMul
+SUBR IAdd
+STOREI (1)
+;(i + 1)
+LOAD (1) 1[SB]
+LOADL 1
+SUBR IAdd
+LOADA 1[SB]
+STOREI (1)
+POP (0) 0
+JUMP tant_que_0
+fin_tant_que_0
+LOADL 0
+LOADA 1[SB]
+STOREI (1)
+;(i < 5)
+tant_que_1
+LOAD (1) 1[SB]
+LOADL 5
+SUBR ILss
+JUMPIF (0) fin_tant_que_1
+LOAD (1) 0[SB]
+LOADL 1
+LOAD (1) 1[SB]
+SUBR IMul
+SUBR IAdd
+LOADI (1)
+SUBR IOut
+;(i + 1)
+LOAD (1) 1[SB]
+LOADL 1
+SUBR IAdd
+LOADA 1[SB]
+STOREI (1)
+POP (0) 0
+JUMP tant_que_1
+fin_tant_que_1
+POP (0) 2
+HALT
+

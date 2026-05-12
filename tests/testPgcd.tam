@@ -1,0 +1,26 @@
+LOADL 221
+LOADL 782
+;(b != 0)
+tant_que_0
+LOAD (1) 1[SB]
+LOADL 0
+SUBR INeq
+JUMPIF (0) fin_tant_que_0
+;(a % b)
+LOAD (1) 0[SB]
+LOAD (1) 1[SB]
+SUBR IMod
+LOAD (1) 1[SB]
+LOADA 0[SB]
+STOREI (1)
+LOAD (1) 2[SB]
+LOADA 1[SB]
+STOREI (1)
+POP (0) 1
+JUMP tant_que_0
+fin_tant_que_0
+LOAD (1) 0[SB]
+SUBR IOut
+POP (0) 2
+HALT
+

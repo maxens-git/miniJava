@@ -1,0 +1,27 @@
+;(1 + 2)
+;((1 + 2) * 3)
+;(((1 + 2) * 3) / 9)
+LOADL 1
+LOADL 2
+SUBR IAdd
+LOADL 3
+SUBR IMul
+LOADL 9
+SUBR IDiv
+LOAD (1) 0[SB]
+SUBR IOut
+;(4 * 1)
+;((4 * 1) + (2 / 2))
+LOADL 4
+LOADL 1
+SUBR IMul
+;(2 / 2)
+LOADL 2
+LOADL 2
+SUBR IDiv
+SUBR IAdd
+LOAD (1) 1[SB]
+SUBR IOut
+POP (0) 2
+HALT
+

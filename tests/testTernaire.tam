@@ -1,0 +1,54 @@
+LOADL 5
+;(i > 5)
+LOAD (1) 0[SB]
+LOADL 5
+SUBR IGtr
+JUMPIF (0) _sinon_ternaire_0
+LOADL 1
+JUMP _fin_ternaire_0
+_sinon_ternaire_0
+LOADL 0
+_fin_ternaire_0
+;(i < 5)
+LOAD (1) 0[SB]
+LOADL 5
+SUBR ILss
+JUMPIF (0) _sinon_ternaire_1
+LOADL 0
+JUMP _fin_ternaire_1
+_sinon_ternaire_1
+LOADL 1
+_fin_ternaire_1
+;(i < 0)
+LOAD (1) 0[SB]
+LOADL 0
+SUBR ILss
+JUMPIF (0) _sinon_ternaire_2
+LOADL 0
+JUMP _fin_ternaire_2
+_sinon_ternaire_2
+;(i == 0)
+LOAD (1) 0[SB]
+LOADL 0
+SUBR IEq
+JUMPIF (0) _sinon_ternaire_3
+LOADL 0
+JUMP _fin_ternaire_3
+_sinon_ternaire_3
+;(i < 10)
+LOAD (1) 0[SB]
+LOADL 10
+SUBR ILss
+JUMPIF (0) _sinon_ternaire_4
+LOADL 1
+JUMP _fin_ternaire_4
+_sinon_ternaire_4
+LOADL 0
+_fin_ternaire_4
+_fin_ternaire_3
+_fin_ternaire_2
+LOAD (1) 3[SB]
+SUBR IOut
+POP (0) 4
+HALT
+

@@ -1,0 +1,62 @@
+LOADL 0
+;(- 3)
+LOADL 3
+SUBR INeg
+;(i <= 3)
+tant_que_0
+LOAD (1) 1[SB]
+LOADL 3
+SUBR ILeq
+JUMPIF (0) fin_tant_que_0
+;(i < 0)
+LOAD (1) 1[SB]
+LOADL 0
+SUBR ILss
+JUMPIF (0) _sinon_0
+;(n - 1)
+LOAD (1) 0[SB]
+LOADL 1
+SUBR ISub
+LOADA 0[SB]
+STOREI (1)
+POP (0) 0
+JUMP _fin_si_0
+_sinon_0
+;(i == 0)
+LOAD (1) 1[SB]
+LOADL 0
+SUBR IEq
+JUMPIF (0) _sinon_1
+;(n + 0)
+LOAD (1) 0[SB]
+LOADL 0
+SUBR IAdd
+LOADA 0[SB]
+STOREI (1)
+POP (0) 0
+JUMP _fin_si_1
+_sinon_1
+;(n + 1)
+LOAD (1) 0[SB]
+LOADL 1
+SUBR IAdd
+LOADA 0[SB]
+STOREI (1)
+POP (0) 0
+_fin_si_1
+POP (0) 0
+_fin_si_0
+;(i + 1)
+LOAD (1) 1[SB]
+LOADL 1
+SUBR IAdd
+LOADA 1[SB]
+STOREI (1)
+POP (0) 0
+JUMP tant_que_0
+fin_tant_que_0
+LOAD (1) 0[SB]
+SUBR IOut
+POP (0) 2
+HALT
+

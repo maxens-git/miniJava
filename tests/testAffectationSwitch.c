@@ -1,0 +1,12 @@
+void main() {
+    int a = 1;
+    int b = 2;
+    int c = 3;
+    a = b;
+    b = c;
+    c = a;
+    print a;
+    print b;
+    print c;
+}
+// Attendu : 2 3 2

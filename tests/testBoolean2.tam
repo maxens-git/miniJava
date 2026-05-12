@@ -1,0 +1,45 @@
+LOADL 1
+LOADL 0
+;(t && f)
+;(! (t && f))
+;((! (t && f)) && (t || f))
+LOAD (1) 0[SB]
+LOAD (1) 1[SB]
+SUBR BAnd
+SUBR BNeg
+;(t || f)
+LOAD (1) 0[SB]
+LOAD (1) 1[SB]
+SUBR BOr
+SUBR BAnd
+JUMPIF (0) _fin_si_0
+LOADL 1
+SUBR IOut
+POP (0) 0
+_fin_si_0
+;(! t)
+;((! t) || (! f))
+LOAD (1) 0[SB]
+SUBR BNeg
+;(! f)
+LOAD (1) 1[SB]
+SUBR BNeg
+SUBR BOr
+JUMPIF (0) _fin_si_1
+LOADL 2
+SUBR IOut
+POP (0) 0
+_fin_si_1
+;(! t)
+;(! (! t))
+LOAD (1) 0[SB]
+SUBR BNeg
+SUBR BNeg
+JUMPIF (0) _fin_si_2
+LOADL 3
+SUBR IOut
+POP (0) 0
+_fin_si_2
+POP (0) 2
+HALT
+
