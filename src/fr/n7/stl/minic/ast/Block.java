@@ -83,7 +83,13 @@ public class Block {
 	 * allowed.
 	 */
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope, FunctionDeclaration _container) {
-		throw new SemanticsUndefinedException( "Semantics collectAndPartialResolve is undefined in Iteration.");
+		boolean ok = true;
+		this.scope = new SymbolTable(_scope); // TODO à vérifier
+		for (Instruction instruction : this.instructions) {
+			ok &= instruction.collectAndPartialResolve(this.scope, _container);
+		}
+		return ok;
+		//throw new SemanticsUndefinedException( "Semantics collectAndPartialResolve is undefined in Iteration.");
 	}
 	
 	/**

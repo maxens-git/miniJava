@@ -88,7 +88,7 @@ public class FunctionCall implements AccessibleExpression {
 			Declaration _declaration = _scope.get(this.name);
 			if (_declaration instanceof FunctionDeclaration) {
 				this.function = (FunctionDeclaration) _declaration;
-				return true;
+				return this.function.collectAndPartialResolve(_scope, this.function);
 			} else {
 				Logger.error("La déclaration n'est pas du bon type");
 				return false;
@@ -140,12 +140,12 @@ public class FunctionCall implements AccessibleExpression {
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		Fragment f = _factory.createFragment();
+		Fragment f = this.function.getCode(_factory);
 		for (AccessibleExpression arg : this.arguments) {
 			f.append(arg.getCode(_factory));
 		}
 		f.add(_factory.createCall("function_" + this.name, Register.SB));
-		throw new SemanticsUndefinedException( "Semantics getCode is undefined in FunctionCall.");
+		//throw new SemanticsUndefinedException( "Semantics getCode is undefined in FunctionCall.");
 		return f;
 		
 	}

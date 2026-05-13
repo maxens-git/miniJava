@@ -7,8 +7,10 @@ import java.security.InvalidParameterException;
 
 import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.Expression;
+import fr.n7.stl.minic.ast.expression.accessible.AccessibleExpression;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
+import fr.n7.stl.minic.ast.instruction.declaration.ParameterDeclaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
@@ -89,7 +91,14 @@ public class Return implements Instruction {
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException("Semantics getCode undefined in Return.");
+		Fragment f = this.value.getCode(_factory);
+		int tailleParam = 0;
+		for (ParameterDeclaration param : this.function.getParameters()) {
+			tailleParam = tailleParam + param.getType().length();
+		}
+		f.add(_factory.createReturn(this.value.getType().length(), tailleParam));
+		return f;
+		//throw new SemanticsUndefinedException("Semantics getCode undefined in Return.");
 	}
 
 }

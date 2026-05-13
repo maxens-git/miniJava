@@ -113,9 +113,9 @@ public class FunctionDeclaration implements DeclarationInstruction {
 	
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope, FunctionDeclaration _container) {
-		if (_scope.accepts(this) && _container.collectAndPartialResolve(_scope)) { // TODO ? 
+		if (_scope.accepts(this)) { // TODO ? 
 			_scope.register(this);
-			return this.body.collectAndPartialResolve(_scope);
+			return this.body.collectAndPartialResolve(_scope, _container);
 		} else {
 			Logger.error("Variable : " + this.name + " is already defined.");
 			return false;
@@ -162,7 +162,10 @@ public class FunctionDeclaration implements DeclarationInstruction {
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException( "Semantics getCode is undefined in FunctionDeclaration.");
+		Fragment f = this.body.getCode(_factory);
+		f.addPrefix("function_" + this.name);
+		return f;
+		//throw new SemanticsUndefinedException( "Semantics getCode is undefined in FunctionDeclaration.");
 	}
 
 }
