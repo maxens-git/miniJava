@@ -63,12 +63,12 @@ public class Block {
 	 * allowed.
 	 */
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-            boolean ok = true;
-			this.scope = new SymbolTable(_scope); // TODO à vérifier
-            for (Instruction instruction : this.instructions) {
-                ok &= instruction.collectAndPartialResolve(this.scope);
-            }
-            return ok;
+		boolean ok = true;
+		this.scope = new SymbolTable(_scope); // TODO à vérifier
+		for (Instruction instruction : this.instructions) {
+			ok &= instruction.collectAndPartialResolve(this.scope);
+		}
+		return ok;
 	//	throw new SemanticsUndefinedException("Semantics collect is undefined in Block.");
 	}
 	

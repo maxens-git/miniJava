@@ -88,11 +88,11 @@ public class FunctionCall implements AccessibleExpression {
 			Declaration _declaration = _scope.get(this.name);
 			if (_declaration instanceof FunctionDeclaration) {
 				this.function = (FunctionDeclaration) _declaration;
-				return this.function.collectAndPartialResolve(_scope, this.function);
 			} else {
 				Logger.error("La déclaration n'est pas du bon type");
 				return false;
 			}
+			return true;
 		} else {
 			Logger.error("Variable : " + this.name + " is not defined.");
 			return false;
@@ -140,7 +140,7 @@ public class FunctionCall implements AccessibleExpression {
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		Fragment f = this.function.getCode(_factory);
+		Fragment f = _factory.createFragment();
 		for (AccessibleExpression arg : this.arguments) {
 			f.append(arg.getCode(_factory));
 		}

@@ -134,7 +134,14 @@ public class Program {
 	 * @return Synthesized AST for the generated TAM code.
 	 */
 	public Fragment getCode(TAMFactory _factory) {
-		return this.main.getCode(_factory);
+		Fragment f = _factory.createFragment();
+		f.add(_factory.createJump("fin_declarations"));
+		for (DeclarationInstruction decl : this.declarations) {
+			f.append(decl.getCode(_factory));
+		}
+		f.addSuffix("fin_declarations");
+		f.append(this.main.getCode(_factory));
+		return f;
 		//throw new SemanticsUndefinedException("Semantics generateCode is undefined in Program.");
 	}
 

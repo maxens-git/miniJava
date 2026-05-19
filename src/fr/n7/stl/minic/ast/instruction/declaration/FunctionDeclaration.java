@@ -11,6 +11,7 @@ import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.instruction.Instruction;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
+import fr.n7.stl.minic.ast.scope.SymbolTable;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
@@ -103,7 +104,16 @@ public class FunctionDeclaration implements DeclarationInstruction {
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
 		if (_scope.accepts(this)) {
 			_scope.register(this);
-			return this.body.collectAndPartialResolve(_scope);
+			HierarchicalScope<Declaration> scopeParameters = new SymbolTable();
+			for (ParameterDeclaration param : this.parameters) {
+				if (scopeParameters.accepts(this)) {
+					scopeParameters.register(param);
+				} else {
+					Logger.error("Impossible de charger : " + this.name);
+					return false;
+				}
+			}
+			return this.collectAndPartialResolve(scopeParameters, this);
 		} else {
 			Logger.error("Variable : " + this.name + " is already defined.");
 			return false;
@@ -113,13 +123,7 @@ public class FunctionDeclaration implements DeclarationInstruction {
 	
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope, FunctionDeclaration _container) {
-		if (_scope.accepts(this)) { // TODO ? 
-			_scope.register(this);
-			return this.body.collectAndPartialResolve(_scope, _container);
-		} else {
-			Logger.error("Variable : " + this.name + " is already defined.");
-			return false;
-		}
+		return this.body.collectAndPartialResolve(_scope, _container);
 		//throw new SemanticsUndefinedException( "Semantics collectAndPartialResolve is undefined in ConstantDeclaration.");
 
 	}
@@ -149,9 +153,9 @@ public class FunctionDeclaration implements DeclarationInstruction {
 	public int allocateMemory(Register _register, int _offset) {
 		int nbMots = 0;
 		//nbMots = 3; // pour le return
-		for (ParameterDeclaration param : this.parameters) {
+		/* for (ParameterDeclaration param : this.parameters) {
 			nbMots = nbMots + param.getType().length();
-		}
+		} */
 		this.body.allocateMemory(Register.LB, _offset + nbMots);
 		return nbMots;
 		//throw new SemanticsUndefinedException( "Semantics allocateMemory is undefined in FunctionDeclaration.");
