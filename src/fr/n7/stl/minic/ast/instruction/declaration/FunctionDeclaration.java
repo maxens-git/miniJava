@@ -142,7 +142,7 @@ public class FunctionDeclaration implements DeclarationInstruction {
 	 */
 	@Override
 	public boolean checkType() {
-		return true;
+		return this.body.checkType();
 		//throw new SemanticsUndefinedException( "Semantics checkType is undefined in FunctionDeclaration.");
 	}
 
@@ -152,12 +152,12 @@ public class FunctionDeclaration implements DeclarationInstruction {
 	@Override
 	public int allocateMemory(Register _register, int _offset) {
 		int nbMots = 0;
-		//nbMots = 3; // pour le return
+		nbMots = 3; // pour le return
 		/* for (ParameterDeclaration param : this.parameters) {
 			nbMots = nbMots + param.getType().length();
 		} */
 		this.body.allocateMemory(Register.LB, _offset + nbMots);
-		return nbMots;
+		return 0;
 		//throw new SemanticsUndefinedException( "Semantics allocateMemory is undefined in FunctionDeclaration.");
 	}
 
