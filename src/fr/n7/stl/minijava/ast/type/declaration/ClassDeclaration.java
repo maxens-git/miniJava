@@ -63,13 +63,17 @@ public class ClassDeclaration implements Instruction, Declaration {
 
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope, FunctionDeclaration _container) {
-		return _scope.accepts(this);
-		//throw new SemanticsUndefinedException( "Semantics resolve is undefined in ClassDeclaration.");
+		throw new SemanticsUndefinedException( "Semantics resolve is undefined in ClassDeclaration.");
 	}
 
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics resolve is undefined in ClassDeclaration.");
+		boolean ok = true;
+		if (this.ancestor != null) {
+			ok = ok & _scope.knows(this.ancestor);
+		}
+		return ok;
+		//throw new SemanticsUndefinedException( "Semantics resolve is undefined in ClassDeclaration.");
 	}
 
 	@Override
