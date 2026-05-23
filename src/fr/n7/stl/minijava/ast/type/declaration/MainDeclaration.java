@@ -41,7 +41,7 @@ public class MainDeclaration implements Instruction {
 			}
 			
 		}
-		return ok;
+		return ok & this.main.collectAndPartialResolve(_scope);
 	}
 
 	@Override
@@ -63,13 +63,21 @@ public class MainDeclaration implements Instruction {
 			}
 			
 		}
-		return ok;
+		return ok & this.main.completeResolve(_scope);
 	}
 
 	@Override
 	public boolean checkType() {
-		// TODO Auto-generated method stub
-		return false;
+		boolean ok = true;
+		for (Declaration d : this.declarations) {
+			if (d instanceof DeclarationInstruction) {
+				DeclarationInstruction instructionDeclaration = (DeclarationInstruction) d;
+				ok = ok & instructionDeclaration.checkType();
+			} else {
+				Logger.error(d.getName() + " is not an instruction declaration");
+			}
+		}
+		return ok & this.main.checkType();
 	}
 
 	@Override
