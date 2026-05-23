@@ -3,6 +3,7 @@ package fr.n7.stl.minijava.ast.type.declaration;
 import java.util.List;
 
 import fr.n7.stl.minic.ast.Block;
+import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.instruction.Instruction;
 import fr.n7.stl.minic.ast.instruction.declaration.DeclarationInstruction;
 import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
@@ -46,13 +47,23 @@ public class MainDeclaration implements Instruction {
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope, FunctionDeclaration _container) {
 		// TODO Auto-generated method stub
-		return false;
+		throw new SemanticsUndefinedException( "Semantics collect is undefined in MainDeclaration.");
+		//return false;
 	}
 
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean ok = true;
+		for (Declaration declaration : this.declarations) {
+			if (declaration instanceof DeclarationInstruction) {
+				DeclarationInstruction instructionDeclaration = (DeclarationInstruction) declaration;
+				ok &= instructionDeclaration.completeResolve(_scope);
+			} else {
+				Logger.error(declaration.getName() + " is not an instruction declaration");
+			}
+			
+		}
+		return ok;
 	}
 
 	@Override
