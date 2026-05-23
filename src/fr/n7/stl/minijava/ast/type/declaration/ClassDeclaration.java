@@ -4,6 +4,7 @@
 package fr.n7.stl.minijava.ast.type.declaration;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.instruction.Instruction;
@@ -47,12 +48,23 @@ public class ClassDeclaration implements Instruction, Declaration {
 
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics collect is undefined in ClassDeclaration.");
+		boolean ok = true;
+		
+		if (_scope.accepts(this)) {
+			if (this.ancestor != null) ok = ok && _scope.knows(this.ancestor);
+			_scope.register(this);
+			return ok;
+		} else {
+			fr.n7.stl.util.Logger.error("La classe " + this.name + " n'est pas acceptée pas la TDS");
+			return false;
+		}
+		//throw new SemanticsUndefinedException( "Semantics collect is undefined in ClassDeclaration.");
 	}
 
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope, FunctionDeclaration _container) {
-		throw new SemanticsUndefinedException( "Semantics resolve is undefined in ClassDeclaration.");
+		return _scope.accepts(this);
+		//throw new SemanticsUndefinedException( "Semantics resolve is undefined in ClassDeclaration.");
 	}
 
 	@Override

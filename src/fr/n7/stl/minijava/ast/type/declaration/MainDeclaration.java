@@ -4,12 +4,15 @@ import java.util.List;
 
 import fr.n7.stl.minic.ast.Block;
 import fr.n7.stl.minic.ast.instruction.Instruction;
+import fr.n7.stl.minic.ast.instruction.declaration.DeclarationInstruction;
 import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
+import fr.n7.stl.minic.ast.scope.SymbolTable;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.util.Logger;
 
 public class MainDeclaration implements Instruction {
 	
@@ -27,8 +30,17 @@ public class MainDeclaration implements Instruction {
 
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean ok = true;
+		for (Declaration declaration : this.declarations) {
+			if (declaration instanceof DeclarationInstruction) {
+				DeclarationInstruction instructionDeclaration = (DeclarationInstruction) declaration;
+				ok &= instructionDeclaration.collectAndPartialResolve(_scope);
+			} else {
+				Logger.error(declaration.getName() + " is not an instruction declaration");
+			}
+			
+		}
+		return ok;
 	}
 
 	@Override
