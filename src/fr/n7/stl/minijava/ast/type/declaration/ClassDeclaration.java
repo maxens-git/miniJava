@@ -4,7 +4,6 @@
 package fr.n7.stl.minijava.ast.type.declaration;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.instruction.Instruction;
@@ -15,6 +14,7 @@ import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.util.Logger;
 
 /**
  * 
@@ -55,7 +55,7 @@ public class ClassDeclaration implements Instruction, Declaration {
 			_scope.register(this);
 			return ok;
 		} else {
-			fr.n7.stl.util.Logger.error("La classe " + this.name + " n'est pas acceptée pas la TDS");
+			Logger.error("La classe " + this.name + " n'est pas acceptée pas la TDS");
 			return false;
 		}
 		//throw new SemanticsUndefinedException( "Semantics collect is undefined in ClassDeclaration.");
