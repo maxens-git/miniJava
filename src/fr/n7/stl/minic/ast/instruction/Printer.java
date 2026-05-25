@@ -12,6 +12,7 @@ import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Library;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.util.Logger;
 
 /**
  * Implementation of the Abstract Syntax Tree node for a printer instruction.
@@ -39,7 +40,12 @@ public class Printer implements Instruction {
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		return this.parameter.collectAndPartialResolve(_scope);
+		if (this.parameter.collectAndPartialResolve(_scope)) {
+			return true;
+		} else {
+			Logger.error("collect for " + this.parameter.getClass() + " has failed");
+			return false;
+		}
 		//throw new SemanticsUndefinedException( "Semantics collect is undefined in Printer.");
 	}
 	

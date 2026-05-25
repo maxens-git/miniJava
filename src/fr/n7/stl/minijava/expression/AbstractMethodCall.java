@@ -14,6 +14,7 @@ import fr.n7.stl.minijava.ast.type.declaration.MethodDeclaration;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.util.Logger;
 
 public abstract class AbstractMethodCall <ObjectKind extends Expression> implements Expression {
 	
@@ -37,8 +38,13 @@ public abstract class AbstractMethodCall <ObjectKind extends Expression> impleme
 
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		// TODO Auto-generated method stub
-		return false;
+		if (_scope.knows(this.name)) {
+			return this.target.collectAndPartialResolve(_scope);
+		} else {
+			Logger.error(this.name + " is not a member of class" + this.target);
+			return false;
+		}
+		
 	}
 
 	@Override

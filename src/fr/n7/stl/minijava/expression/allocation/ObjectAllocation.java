@@ -10,6 +10,7 @@ import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.util.Logger;
 
 public class ObjectAllocation  implements AccessibleExpression, AssignableExpression {
 	
@@ -24,14 +25,18 @@ public class ObjectAllocation  implements AccessibleExpression, AssignableExpres
 
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		// TODO Auto-generated method stub
-		return false;
+		if (_scope.knows(this.name)) {
+			return true;
+		} else {
+			Logger.error(this.name + " is undefined");
+			return false;
+		}
+		
 	}
 
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override

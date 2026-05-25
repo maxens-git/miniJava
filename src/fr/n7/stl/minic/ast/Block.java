@@ -13,6 +13,7 @@ import fr.n7.stl.minic.ast.scope.SymbolTable;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.util.Logger;
 
 /**
  * Represents a Block node in the Abstract Syntax Tree node for the Bloc language.
@@ -67,6 +68,10 @@ public class Block {
 		this.scope = new SymbolTable(_scope); // TODO à vérifier
 		for (Instruction instruction : this.instructions) {
 			ok &= instruction.collectAndPartialResolve(this.scope);
+			if (!ok) {
+				Logger.error("collect for : " + instruction + " has failed");
+				return false;
+			}
 		}
 		return ok;
 	//	throw new SemanticsUndefinedException("Semantics collect is undefined in Block.");
