@@ -3,6 +3,7 @@ package fr.n7.stl.minijava.instruction;
 import java.util.Iterator;
 import java.util.List;
 
+import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.accessible.AccessibleExpression;
 import fr.n7.stl.minic.ast.instruction.Instruction;
 import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
@@ -38,25 +39,25 @@ public class MethodCall implements Instruction {
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
 		// TODO Auto-generated method stub
-		return false;
+		throw new SemanticsUndefinedException("aie aie aie");
 	}
 
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope, FunctionDeclaration _container) {
 		// TODO Auto-generated method stub
-		return false;
+		throw new SemanticsUndefinedException("aie aie aie");
 	}
 
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
 		// TODO Auto-generated method stub
-		return false;
+		throw new SemanticsUndefinedException("aie aie aie");
 	}
 
 	@Override
 	public boolean checkType() {
 		// TODO Auto-generated method stub
-		return false;
+		throw new SemanticsUndefinedException("aie aie aie");
 	}
 
 	@Override

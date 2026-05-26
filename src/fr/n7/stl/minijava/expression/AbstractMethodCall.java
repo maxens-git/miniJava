@@ -41,6 +41,7 @@ public abstract class AbstractMethodCall <ObjectKind extends Expression> impleme
 		if (_scope.knows(this.name)) {
 			return this.target.collectAndPartialResolve(_scope);
 		} else {
+			// System.out.println(_scope);
 			Logger.error(this.name + " is not a member of class" + this.target);
 			return false;
 		}
@@ -50,7 +51,8 @@ public abstract class AbstractMethodCall <ObjectKind extends Expression> impleme
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
 		// TODO Auto-generated method stub
-		return false;
+		//return false;
+		return this.target.completeResolve(_scope);
 	}
 
 	@Override
