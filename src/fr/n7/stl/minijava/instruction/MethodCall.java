@@ -14,6 +14,7 @@ import fr.n7.stl.minijava.ast.type.declaration.MethodDeclaration;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.util.Logger;
 
 public class MethodCall implements Instruction {
 	
@@ -38,8 +39,25 @@ public class MethodCall implements Instruction {
 
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		// TODO Auto-generated method stub
-		throw new SemanticsUndefinedException("aie aie aie");
+		if (((HierarchicalScope<Declaration>)_scope).knows(this.name)) {
+			for (AccessibleExpression parametre : this.arguments) {
+				if(!parametre.collectAndPartialResolve(_scope)) {
+					return false;
+				};
+			}
+
+			Declaration _declaration = _scope.get(this.name);
+			if (_declaration instanceof MethodDeclaration) {
+				this.method = (MethodDeclaration) _declaration;
+			} else {
+				Logger.error("La déclaration n'est pas du bon type");
+				return false;
+			}
+			return true;
+		} else {
+			Logger.error("Variable : " + this.name + " is not defined.");
+			return false;
+		}
 	}
 
 	@Override
@@ -50,8 +68,17 @@ public class MethodCall implements Instruction {
 
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		// TODO Auto-generated method stub
-		throw new SemanticsUndefinedException("aie aie aie");
+		if (((HierarchicalScope<Declaration>)_scope).knows(this.name)) {
+			for (AccessibleExpression parametre : this.arguments) {
+				if(!parametre.completeResolve(_scope)) {
+					return false;
+				};
+			}
+			return true;
+		} else {
+			Logger.error("Variable : " + this.name + " is not defined.");
+			return false;
+		}
 	}
 
 	@Override

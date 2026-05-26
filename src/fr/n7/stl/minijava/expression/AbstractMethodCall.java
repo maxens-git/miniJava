@@ -3,6 +3,7 @@ package fr.n7.stl.minijava.expression;
 import java.util.Iterator;
 import java.util.List;
 
+import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.Expression;
 import fr.n7.stl.minic.ast.expression.accessible.AccessibleExpression;
 import fr.n7.stl.minic.ast.instruction.Instruction;
@@ -39,26 +40,37 @@ public abstract class AbstractMethodCall <ObjectKind extends Expression> impleme
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
 		if (_scope.knows(this.name)) {
-			return this.target.collectAndPartialResolve(_scope);
+			boolean ok = true;
+			if (this.target != null) {
+				ok = this.target.collectAndPartialResolve(_scope);
+			}
+			for (AccessibleExpression arg : this.arguments) {
+				ok &= arg.collectAndPartialResolve(_scope);
+			}
+			return ok;
 		} else {
 			// System.out.println(_scope);
 			Logger.error(this.name + " is not a member of class" + this.target);
 			return false;
 		}
-		
 	}
 
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		// TODO Auto-generated method stub
-		//return false;
-		return this.target.completeResolve(_scope);
+		boolean ok = true;
+		if (this.target != null) {
+			ok &= this.target.completeResolve(_scope);
+		}
+		for (AccessibleExpression a : this.arguments) {
+			ok &= a.completeResolve(_scope);
+		}
+		return ok;
 	}
 
 	@Override
 	public Type getType() {
 		// TODO Auto-generated method stub
-		return null;
+		throw new SemanticsUndefinedException("aie aie aie");
 	}
 	
 	@Override
