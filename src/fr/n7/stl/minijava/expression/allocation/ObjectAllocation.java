@@ -3,6 +3,7 @@ package fr.n7.stl.minijava.expression.allocation;
 import java.util.Iterator;
 import java.util.List;
 
+import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.accessible.AccessibleExpression;
 import fr.n7.stl.minic.ast.expression.assignable.AssignableExpression;
 import fr.n7.stl.minic.ast.scope.Declaration;
@@ -26,7 +27,11 @@ public class ObjectAllocation  implements AccessibleExpression, AssignableExpres
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
 		if (_scope.knows(this.name)) {
-			return true;
+			boolean ok = true;
+			for (AccessibleExpression a : this.arguments) {
+				ok = ok && a.completeResolve(_scope);
+			}
+			return ok;
 		} else {
 			Logger.error(this.name + " is undefined");
 			return false;
@@ -36,7 +41,11 @@ public class ObjectAllocation  implements AccessibleExpression, AssignableExpres
 
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		return true;
+		boolean ok = true;
+		for (AccessibleExpression a : this.arguments) {
+			ok = ok && a.completeResolve(_scope);
+		}
+		return ok;
 	}
 
 	@Override

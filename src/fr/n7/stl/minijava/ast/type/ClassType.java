@@ -1,5 +1,6 @@
 package fr.n7.stl.minijava.ast.type;
 
+import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.Type;
@@ -15,19 +16,19 @@ public class ClassType implements Type {
 	@Override
 	public boolean equalsTo(Type _other) {
 		// TODO Auto-generated method stub
-		return false;
+		throw new SemanticsUndefinedException("aie aie aie");
 	}
 
 	@Override
 	public boolean compatibleWith(Type _other) {
 		// TODO Auto-generated method stub
-		return false;
+		throw new SemanticsUndefinedException("aie aie aie");
 	}
 
 	@Override
 	public Type merge(Type _other) {
 		// TODO Auto-generated method stub
-		return null;
+		throw new SemanticsUndefinedException("aie aie aie");
 	}
 
 	@Override
@@ -39,7 +40,8 @@ public class ClassType implements Type {
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
 		// TODO Auto-generated method stub
-		return false;
+		//throw new SemanticsUndefinedException("aie aie aie");
+		return _scope.knows(this.name);
 	}
 	
 	public String toString() {

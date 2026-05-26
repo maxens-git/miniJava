@@ -53,6 +53,11 @@ public class ClassDeclaration implements Instruction, Declaration {
 		if (_scope.accepts(this)) {
 			if (this.ancestor != null) ok = ok && _scope.knows(this.ancestor);
 			_scope.register(this);
+			for (ClassElement elem : this.elements) {
+				if (elem.getAccessRight() == AccessRight.PUBLIC && _scope.accepts(elem)) { // TODO : C pas bon
+					_scope.register(elem);
+				}
+			}
 			return ok;
 		} else {
 			Logger.error("La classe " + this.name + " n'est pas acceptée pas la TDS");
