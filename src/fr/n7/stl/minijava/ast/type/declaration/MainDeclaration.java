@@ -82,14 +82,15 @@ public class MainDeclaration implements Instruction {
 
 	@Override
 	public int allocateMemory(Register _register, int _offset) {
-		// TODO Auto-generated method stub
+		this.main.allocateMemory(_register, _offset);
 		return 0;
 	}
 
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
 		// TODO Auto-generated method stub
-		throw new SemanticsUndefinedException( "aie aie aie");
+		return this.main.getCode(_factory);
+		//throw new SemanticsUndefinedException( "aie aie aie");
 	}
 	
 	public String getName() {

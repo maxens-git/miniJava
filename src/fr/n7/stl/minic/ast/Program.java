@@ -117,12 +117,7 @@ public class Program {
 	 * @param _offset Inherited Current offset for the address of the variables.
 	 */	
 	public void allocateMemory(Register _register, int _offset) {
-		//throw new SemanticsUndefinedException("Semantics allocateMemory is undefined in Program.");
-		int noffset = _offset;
-		for (DeclarationInstruction instr : this.declarations) {
-			noffset = instr.allocateMemory(_register, noffset);
-			_offset += noffset;
-		} 
+		//throw new SemanticsUndefinedException("Semantics allocateMemory is undefined in Program.")
 		this.main.allocateMemory(_register, _offset);
 		
 	}

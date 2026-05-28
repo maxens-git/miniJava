@@ -11,6 +11,7 @@ import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.minijava.ast.type.ClassType;
 import fr.n7.stl.tam.ast.Fragment;
+import fr.n7.stl.tam.ast.Library;
 import fr.n7.stl.tam.ast.TAMFactory;
 import fr.n7.stl.util.Logger;
 
@@ -59,7 +60,14 @@ public class ObjectAllocation  implements AccessibleExpression, AssignableExpres
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
 		// TODO Auto-generated method stub
-		throw new SemanticsUndefinedException( "aie aie aie");
+		Fragment f = _factory.createFragment();
+		for (AccessibleExpression expr : this.arguments) {
+			f.append(expr.getCode(_factory));
+		}
+		f.add(_factory.createLoadL(this.getType().length()));
+		f.add(Library.MAlloc);
+		return f;
+		//throw new SemanticsUndefinedException( "aie aie aie");
 	}
 	
 	@Override

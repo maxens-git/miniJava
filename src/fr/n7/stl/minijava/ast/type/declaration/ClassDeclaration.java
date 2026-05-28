@@ -174,7 +174,8 @@ public class ClassDeclaration implements Instruction, Declaration {
 				if ((AtomicType) typeElem == AtomicType.ErrorType) {
 					return false;
 				}
-			} else if (element instanceof MethodDeclaration) {
+			} 
+			if (element instanceof MethodDeclaration) {
 				ok &= ((MethodDeclaration) element).body.checkType();
 			} else if (element instanceof ConstructorDeclaration) {
 				ok &= ((ConstructorDeclaration) element).body.checkType();
@@ -185,12 +186,14 @@ public class ClassDeclaration implements Instruction, Declaration {
 
 	@Override
 	public int allocateMemory(Register _register, int _offset) {
-		throw new SemanticsUndefinedException( "Semantics allocation memory is undefined in ClassDeclaration.");
+		return 0;
+		//throw new SemanticsUndefinedException( "Semantics allocation memory is undefined in ClassDeclaration.");
 	}
 
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException( "Semantics get code is undefined in ClassDeclaration.");
+		return _factory.createFragment();
+		//throw new SemanticsUndefinedException( "Semantics get code is undefined in ClassDeclaration.");
 	}
 
 	@Override
