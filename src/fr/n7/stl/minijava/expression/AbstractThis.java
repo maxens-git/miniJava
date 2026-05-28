@@ -33,6 +33,7 @@ public abstract class AbstractThis <ObjectKind extends Expression> implements Ex
 			Logger.error("aie this unknown"); 
 			return false; 
 		}
+		this.type = _scope.get("this").getType();
     	return true;
 		//throw new SemanticsUndefinedException("aie aie aie");
 	}

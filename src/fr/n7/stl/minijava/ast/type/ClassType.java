@@ -18,6 +18,11 @@ public class ClassType implements Type {
 		this.declaration = null;
 	}
 
+	public ClassType(ClassDeclaration _declaration) {
+		this.name = _declaration.getName();
+		this.declaration = _declaration;
+	}
+
 	@Override
 	public boolean equalsTo(Type _other) {
 		if (_other instanceof ClassType) {

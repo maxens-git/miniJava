@@ -88,7 +88,7 @@ public class ClassDeclaration implements Instruction, Declaration {
 				} else if (e instanceof MethodDeclaration) {
 
 					HierarchicalScope<Declaration> scopeParameters = new SymbolTable(attributeScope);
-					scopeParameters.register(new ParameterDeclaration("this", new ClassType(this.name)));
+					scopeParameters.register(new ParameterDeclaration("this", new ClassType(this)));
 					for (ParameterDeclaration p : ((MethodDeclaration) e).parameters) {
 						scopeParameters.register(p);
 					}
@@ -97,7 +97,7 @@ public class ClassDeclaration implements Instruction, Declaration {
 				} else if (e instanceof ConstructorDeclaration) {
 
 					HierarchicalScope<Declaration> scopeParameters = new SymbolTable(attributeScope);
-					scopeParameters.register(new ParameterDeclaration("this", new ClassType(this.name)));
+					scopeParameters.register(new ParameterDeclaration("this", new ClassType(this)));
 					for (ParameterDeclaration p : ((ConstructorDeclaration) e).parameters) {
 						scopeParameters.register(p);
 					}
@@ -139,7 +139,7 @@ public class ClassDeclaration implements Instruction, Declaration {
             	ok &= ((AttributeDeclaration) e).getType().completeResolve(_scope);
 			} else if (e instanceof MethodDeclaration) {
 				HierarchicalScope<Declaration> scopeParameters = new SymbolTable(attributeScope);
-				scopeParameters.register(new ParameterDeclaration("this", new ClassType(this.name)));
+				scopeParameters.register(new ParameterDeclaration("this", new ClassType(this)));
 				for (ParameterDeclaration p : ((MethodDeclaration) e).parameters) {
 					scopeParameters.register(p);
 					ok &= p.getType().completeResolve(scopeParameters);
@@ -149,7 +149,7 @@ public class ClassDeclaration implements Instruction, Declaration {
 
 			} else if (e instanceof ConstructorDeclaration) {
 				HierarchicalScope<Declaration> scopeParameters = new SymbolTable(attributeScope);
-				scopeParameters.register(new ParameterDeclaration("this", new ClassType(this.name)));
+				scopeParameters.register(new ParameterDeclaration("this", new ClassType(this)));
 				for (ParameterDeclaration p : ((ConstructorDeclaration) e).parameters) {
 					scopeParameters.register(p);
 					ok &= p.getType().completeResolve(scopeParameters);
@@ -167,15 +167,20 @@ public class ClassDeclaration implements Instruction, Declaration {
 
 	@Override
 	public boolean checkType() {
+		boolean ok = true;
 		for (ClassElement element : this.elements) {
 			Type typeElem = element.getType();
 			if (typeElem instanceof AtomicType) {
 				if ((AtomicType) typeElem == AtomicType.ErrorType) {
 					return false;
 				}
+			} else if (element instanceof MethodDeclaration) {
+				ok &= ((MethodDeclaration) element).body.checkType();
+			} else if (element instanceof ConstructorDeclaration) {
+				ok &= ((ConstructorDeclaration) element).body.checkType();
 			}
 		}
-		return true;
+		return ok;
 	}
 
 	@Override
