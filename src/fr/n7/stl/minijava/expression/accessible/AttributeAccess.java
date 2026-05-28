@@ -16,27 +16,15 @@ public class AttributeAccess extends AbstractAttribute<AccessibleExpression>  im
 	}
 
 	@Override
-	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		// TODO Auto-generated method stub
-		return this.object.collectAndPartialResolve(_scope); //TODO
-	}
-
-	@Override
-	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		// TODO Auto-generated method stub
-		return this.object.completeResolve(_scope); //TODO
-	}
-
-	@Override
 	public Type getType() {
 		// TODO Auto-generated method stub
-		return null;
+		throw new SemanticsUndefinedException( "aie aie aie");
 	}
 
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
 		// TODO Auto-generated method stub
-		return null;
+		throw new SemanticsUndefinedException( "aie aie aie");
 	}
 
 }
