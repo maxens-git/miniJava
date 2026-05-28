@@ -5,9 +5,13 @@ import fr.n7.stl.minic.ast.expression.Expression;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.Type;
+import fr.n7.stl.minijava.ast.type.ClassType;
+import fr.n7.stl.minijava.ast.type.declaration.ClassDeclaration;
 import fr.n7.stl.util.Logger;
 
 public abstract class AbstractThis <ObjectKind extends Expression> implements Expression {
+
+	protected Type type;
 
 	public AbstractThis() {
 		// TODO Auto-generated constructor stub
@@ -19,6 +23,7 @@ public abstract class AbstractThis <ObjectKind extends Expression> implements Ex
 			Logger.error("aie this unknown"); 
 			return false; 
 		}
+		this.type = _scope.get("this").getType();
     	return true;
 	}
 
@@ -34,8 +39,8 @@ public abstract class AbstractThis <ObjectKind extends Expression> implements Ex
 
 	@Override
 	public Type getType() {
-		// TODO Auto-generated method stub
-		throw new SemanticsUndefinedException("aie aie aie");
+		return this.type;
+		//throw new SemanticsUndefinedException("aie aie aie");
 	}
 	
 	@Override
