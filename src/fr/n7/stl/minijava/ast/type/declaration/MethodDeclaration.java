@@ -9,6 +9,8 @@ import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
 import fr.n7.stl.minic.ast.instruction.declaration.ParameterDeclaration;
 import fr.n7.stl.minic.ast.type.AtomicType;
 import fr.n7.stl.minic.ast.type.Type;
+import fr.n7.stl.tam.ast.Fragment;
+import fr.n7.stl.tam.ast.TAMFactory;
 
 public class MethodDeclaration  extends ClassElement {
 	
@@ -68,4 +70,8 @@ public class MethodDeclaration  extends ClassElement {
 		//throw new SemanticsUndefinedException( "aie aie aie");
 	}
 
+	@Override
+	public Fragment getCode(TAMFactory _factory) {
+		return this.body.getCode(_factory);
+	}
 }

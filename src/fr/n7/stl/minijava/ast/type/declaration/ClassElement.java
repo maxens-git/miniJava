@@ -1,6 +1,8 @@
 package fr.n7.stl.minijava.ast.type.declaration;
 
 import fr.n7.stl.minic.ast.scope.Declaration;
+import fr.n7.stl.tam.ast.Fragment;
+import fr.n7.stl.tam.ast.TAMFactory;
 
 public abstract class ClassElement  implements Declaration {
 	
@@ -39,6 +41,10 @@ public abstract class ClassElement  implements Declaration {
 	@Override
 	public String getName() {
 		return this.name;
+	}
+
+	public Fragment getCode(TAMFactory _factory) {
+		return _factory.createFragment();
 	}
 
 }

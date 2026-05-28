@@ -190,13 +190,30 @@ public class ClassDeclaration implements Instruction, Declaration {
 
 	@Override
 	public int allocateMemory(Register _register, int _offset) {
+		int attributeOffset = 0;
+		int nbMots = 3;
+		for (ClassElement e : this.elements) {
+			if (e instanceof AttributeDeclaration) {
+				int length = e.getType().length();
+				((AttributeDeclaration) e).setOffset(attributeOffset);
+				attributeOffset += length;
+			} else if (e instanceof MethodDeclaration) {
+				((MethodDeclaration) e).body.allocateMemory(Register.LB, _offset + nbMots);
+			} else if (e instanceof ConstructorDeclaration) {
+				((ConstructorDeclaration) e).body.allocateMemory(Register.LB, _offset + nbMots);
+			}
+		}
 		return 0;
 		//throw new SemanticsUndefinedException( "Semantics allocation memory is undefined in ClassDeclaration.");
 	}
 
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		return _factory.createFragment();
+		Fragment f = _factory.createFragment();
+		for (ClassElement e : this.elements) {
+			f.append(e.getCode(_factory));
+		}
+		return f;
 		//throw new SemanticsUndefinedException( "Semantics get code is undefined in ClassDeclaration.");
 	}
 

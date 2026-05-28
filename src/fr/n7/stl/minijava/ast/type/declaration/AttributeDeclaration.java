@@ -11,7 +11,7 @@ public class AttributeDeclaration extends ClassElement {
 	public AttributeDeclaration( String _name, Type _type) {
 		super(_name);
 		this.type = _type;
-		this.offset = -1;
+		this.offset = 0;
 	}
 
 	@Override
