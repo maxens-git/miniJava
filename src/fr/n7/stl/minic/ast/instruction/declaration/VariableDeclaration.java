@@ -151,7 +151,6 @@ public class VariableDeclaration implements DeclarationInstruction {
 	public boolean checkType() {
 		//System.out.println(this.type + " " + this.value.getType());
 		Type typeRight = this.value.getType();
-		System.out.println(typeRight.getClass());
 		Boolean ok = this.type.compatibleWith(typeRight);
 		if (!ok) {
 			Logger.error(this.type + " is not compatible with " + typeRight);
