@@ -3,13 +3,16 @@
  */
 package fr.n7.stl.minijava.ast.type.declaration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.instruction.Instruction;
 import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
+import fr.n7.stl.minic.ast.instruction.declaration.ParameterDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
+import fr.n7.stl.minic.ast.scope.SymbolTable;
 import fr.n7.stl.minic.ast.type.AtomicType;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.minijava.ast.type.ClassType;
@@ -47,25 +50,67 @@ public class ClassDeclaration implements Instruction, Declaration {
 	public ClassDeclaration(boolean _concrete, String _name, List<ClassElement> _elements) {
 		this( _concrete, _name, null, _elements);
 	}
+	
+	public ClassElement get(String classElemName) {
+        for (ClassElement e : this.elements) {
+            if (e.getName().equals(classElemName)) {
+				return e;
+			}
+        }
+        return null;
+    }
 
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		boolean ok = true;
-		
 		if (_scope.accepts(this)) {
-			if (this.ancestor != null) ok = ok && _scope.knows(this.ancestor);
 			_scope.register(this);
-			for (ClassElement elem : this.elements) {
-				if (elem.getAccessRight() == AccessRight.PUBLIC && _scope.accepts(elem)) { // TODO : C pas bon
-					_scope.register(elem);
+			List<String> elems = new ArrayList<>();
+			for (ClassElement e : this.elements) {
+				if (elems.contains(e.getName())) {
+					Logger.error("duplicate element ");
+					return false;
+				} else {
+					elems.add(e.getName());
+				}
+			}
+			boolean ok = true;
+
+			HierarchicalScope<Declaration> attributeScope = new SymbolTable(_scope);
+			for (ClassElement e : this.elements) {
+				if (e instanceof AttributeDeclaration) {
+					attributeScope.register((AttributeDeclaration) e);
+				}
+			}
+
+			for (ClassElement e : this.elements) {
+				if (e instanceof AttributeDeclaration) {
+					
+				} else if (e instanceof MethodDeclaration) {
+					
+					HierarchicalScope<Declaration> scopeParameters = new SymbolTable(attributeScope);
+					for (ParameterDeclaration p : ((MethodDeclaration) e).parameters) {
+						scopeParameters.register(p);
+					} 
+					ok &= ((MethodDeclaration) e).body.collectAndPartialResolve(scopeParameters);
+
+				} else if (e instanceof ConstructorDeclaration) {
+					
+					HierarchicalScope<Declaration> scopeParameters = new SymbolTable(attributeScope);
+					for (ParameterDeclaration p : ((ConstructorDeclaration) e).parameters) {
+						scopeParameters.register(p);
+					}
+					ok &= ((ConstructorDeclaration) e).body.collectAndPartialResolve(scopeParameters);
+
+				} else {
+					if (!(e instanceof AttributeDeclaration)) {
+						Logger.error("Unknown type in " + this + " class");
+					}
 				}
 			}
 			return ok;
-		} else {
-			Logger.error("La classe " + this.name + " n'est pas acceptée pas la TDS");
-			return false;
 		}
-		//throw new SemanticsUndefinedException( "Semantics collect is undefined in ClassDeclaration.");
+		
+		return false;
 	}
 
 	@Override
@@ -79,6 +124,32 @@ public class ClassDeclaration implements Instruction, Declaration {
 		if (this.ancestor != null) {
 			ok = ok & _scope.knows(this.ancestor);
 		}
+
+		for (ClassElement e : this.elements) {
+			if (e instanceof AttributeDeclaration) {
+            	ok &= ((AttributeDeclaration) e).getType().completeResolve(_scope);
+			} else if (e instanceof MethodDeclaration) {
+				HierarchicalScope<Declaration> scopeParameters = new SymbolTable(_scope);
+				for (ParameterDeclaration p : ((MethodDeclaration) e).parameters) {
+					scopeParameters.register(p);
+					ok &= p.getType().completeResolve(scopeParameters);
+				}
+
+				ok &= ((MethodDeclaration) e).body.completeResolve(scopeParameters);
+
+			} else if (e instanceof ConstructorDeclaration) {
+				HierarchicalScope<Declaration> scopeParameters = new SymbolTable(_scope);
+				for (ParameterDeclaration p : ((ConstructorDeclaration) e).parameters) {
+					scopeParameters.register(p);
+					ok &= p.getType().completeResolve(scopeParameters);
+				}
+				ok &= ((ConstructorDeclaration) e).body.completeResolve(scopeParameters);
+
+			} else {
+				Logger.error("Unknown type in " + this + " class");
+			}
+		}
+
 		return ok;
 		//throw new SemanticsUndefinedException( "Semantics resolve is undefined in ClassDeclaration.");
 	}

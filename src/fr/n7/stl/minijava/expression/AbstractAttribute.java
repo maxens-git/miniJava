@@ -29,21 +29,34 @@ public abstract class AbstractAttribute <ObjectKind extends Expression> implemen
 
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		
-		this.attribute = (AttributeDeclaration) _scope.get(name);
-		System.out.println(this);
 		return this.object.collectAndPartialResolve(_scope);
 	}
 
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
 		boolean ok = this.object.completeResolve(_scope);
+
+		Type nt = this.object.getType();
+		if (nt instanceof ClassType) { 
+			ClassDeclaration cd = ((ClassType) nt).getDeclaration();
+			ClassElement e = cd.get(this.name);
+			if (e instanceof AttributeDeclaration) {
+				this.attribute = (AttributeDeclaration) e;
+			} else {
+				Logger.error("not a attrbiute declaration");
+			}
+		} else {
+			Logger.error("Not a class typs"); 
+			return false; 
+		}
+		if (this.attribute == null) {
+			Logger.error("attribute not defined");
+		}
 		return ok;
 	}
 
 	@Override
 	public Type getType() {
-		System.out.println(this);
 		if (this.attribute == null) {
 			Logger.error("Pas la déclaration de " + this.name);
 		}

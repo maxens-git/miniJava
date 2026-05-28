@@ -5,6 +5,7 @@ import fr.n7.stl.minic.ast.expression.Expression;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.Type;
+import fr.n7.stl.util.Logger;
 
 public abstract class AbstractThis <ObjectKind extends Expression> implements Expression {
 
@@ -14,14 +15,21 @@ public abstract class AbstractThis <ObjectKind extends Expression> implements Ex
 
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		// TODO Auto-generated method stub
-		throw new SemanticsUndefinedException("aie aie aie");
+		if (!_scope.knows("this")) { 
+			Logger.error("aie this unknown"); 
+			return false; 
+		}
+    	return true;
 	}
 
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		// TODO Auto-generated method stub
-		throw new SemanticsUndefinedException("aie aie aie");
+		if (!_scope.knows("this")) { 
+			Logger.error("aie this unknown"); 
+			return false; 
+		}
+    	return true;
+		//throw new SemanticsUndefinedException("aie aie aie");
 	}
 
 	@Override

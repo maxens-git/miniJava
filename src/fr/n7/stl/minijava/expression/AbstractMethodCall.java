@@ -11,6 +11,8 @@ import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.Type;
+import fr.n7.stl.minijava.ast.type.ClassType;
+import fr.n7.stl.minijava.ast.type.declaration.ClassDeclaration;
 import fr.n7.stl.minijava.ast.type.declaration.MethodDeclaration;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
@@ -39,21 +41,16 @@ public abstract class AbstractMethodCall <ObjectKind extends Expression> impleme
 
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		if (_scope.knows(this.name)) {
-			boolean ok = true;
-			this.declaration = (MethodDeclaration) _scope.get(name);
-			if (this.target != null) {
-				ok = this.target.collectAndPartialResolve(_scope);
+		if (this.target.collectAndPartialResolve(_scope)) {
+			for (AccessibleExpression a : this.arguments) {
+				if (!a.collectAndPartialResolve(_scope)) {
+					return false;
+				}
 			}
-			for (AccessibleExpression arg : this.arguments) {
-				ok &= arg.collectAndPartialResolve(_scope);
-			}
-			return ok;
 		} else {
-			// System.out.println(_scope);
-			Logger.error(this.name + " is not a member of class" + this.target);
 			return false;
 		}
+		return true;
 	}
 
 	@Override
@@ -64,6 +61,11 @@ public abstract class AbstractMethodCall <ObjectKind extends Expression> impleme
 		}
 		for (AccessibleExpression a : this.arguments) {
 			ok &= a.completeResolve(_scope);
+		}
+		ClassDeclaration classDecl = ((ClassType) this.target.getType()).getDeclaration(); 
+		this.declaration = (MethodDeclaration) classDecl.get(this.name);
+		if (this.declaration == null) {
+			return false;
 		}
 		return ok;
 	}
