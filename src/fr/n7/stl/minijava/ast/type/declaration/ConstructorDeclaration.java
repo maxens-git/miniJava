@@ -7,6 +7,7 @@ import fr.n7.stl.minic.ast.Block;
 import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
 import fr.n7.stl.minic.ast.instruction.declaration.ParameterDeclaration;
+import fr.n7.stl.minic.ast.type.AtomicType;
 import fr.n7.stl.minic.ast.type.Type;
 
 public class ConstructorDeclaration extends ClassElement {
@@ -41,7 +42,10 @@ public class ConstructorDeclaration extends ClassElement {
 
 	@Override
 	public Type getType() {
-		// TODO Auto-generated method stub
-		throw new SemanticsUndefinedException( "aie aie aie");
+		if (!this.body.checkType()) {
+			return AtomicType.ErrorType;
+		}
+		return AtomicType.VoidType;
+		//throw new SemanticsUndefinedException( "aie aie aie");
 	}
 }

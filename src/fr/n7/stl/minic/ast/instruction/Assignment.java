@@ -92,6 +92,7 @@ public class Assignment implements Instruction, Expression {
 	@Override
 	public boolean checkType() {
 		//System.out.println(this.assignable.getType() + " = " + this.value.getType());
+		System.out.println(this.assignable.getClass());
 		return this.assignable.getType().compatibleWith(this.value.getType());
 		//throw new SemanticsUndefinedException( "Semantics checkType is undefined in Assignment.");
 	}

@@ -73,7 +73,11 @@ public class Return implements Instruction {
 	 */
 	@Override
 	public boolean checkType() {
-		return this.function.getType().compatibleWith(this.value.getType());
+		if (this.function != null) {
+			return this.function.getType().compatibleWith(this.value.getType());
+		}
+		System.out.println("Attention pas de function");
+		return true;
 		//throw new SemanticsUndefinedException("Semantics checkType undefined in Return.");
 	}
 
