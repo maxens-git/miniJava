@@ -2,11 +2,11 @@ class A {
 	public int v;
 	
 	public int getV() {
-		return v;
+		return this.v;
 	}
 	
 	public A() {
-		v = 0;
+		this.v = 0;
 	}
 
 
