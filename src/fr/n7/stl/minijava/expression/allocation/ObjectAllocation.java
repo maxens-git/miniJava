@@ -51,13 +51,13 @@ public class ObjectAllocation  implements AccessibleExpression, AssignableExpres
 	@Override
 	public Type getType() {
 		// TODO Auto-generated method stub
-		return null;
+		throw new SemanticsUndefinedException( "aie aie aie");
 	}
 
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
 		// TODO Auto-generated method stub
-		return null;
+		throw new SemanticsUndefinedException( "aie aie aie");
 	}
 	
 	@Override

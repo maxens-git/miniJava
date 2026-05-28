@@ -96,7 +96,7 @@ public class MethodCall implements Instruction {
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
 		// TODO Auto-generated method stub
-		return null;
+		throw new SemanticsUndefinedException( "aie aie aie");
 	}
 	
 	@Override
