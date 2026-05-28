@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package fr.n7.stl.minic.ast.expression.assignable;
 
@@ -8,6 +8,9 @@ import fr.n7.stl.minic.ast.instruction.declaration.VariableDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.Type;
+import fr.n7.stl.minijava.ast.type.declaration.AttributeDeclaration;
+import fr.n7.stl.minijava.expression.assignable.AttributeAssignment;
+import fr.n7.stl.minijava.expression.assignable.ThisAssignment;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
@@ -19,8 +22,9 @@ import fr.n7.stl.util.Logger;
  *
  */
 public class VariableAssignment extends AbstractIdentifier implements AssignableExpression {
-	
+
 	protected VariableDeclaration declaration;
+	protected AssignableExpression attributeAssignment;
 
 	/**
 	 * Creates a variable assignment expression Abstract Syntax Tree node.
@@ -29,7 +33,7 @@ public class VariableAssignment extends AbstractIdentifier implements Assignable
 	public VariableAssignment(String _name) {
 		super(_name);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see fr.n7.stl.block.ast.expression.AbstractIdentifier#collect(fr.n7.stl.block.ast.scope.HierarchicalScope)
 	 */
@@ -40,29 +44,38 @@ public class VariableAssignment extends AbstractIdentifier implements Assignable
 			if (_declaration instanceof VariableDeclaration) {
 				this.declaration = ((VariableDeclaration) _declaration);
 				return true;
+			} else if (_declaration instanceof AttributeDeclaration) {
+				this.attributeAssignment = new AttributeAssignment(new ThisAssignment(), this.name);
+				return this.attributeAssignment.collectAndPartialResolve(_scope);
 			} else {
 				Logger.error("The declaration for " + this.name + " is of the wrong kind.");
 				return false;
 			}
 		} else {
 			Logger.error("The identifier " + this.name + " has not been found.");
-			return false;	
+			return false;
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see fr.n7.stl.block.ast.expression.AbstractIdentifier#resolve(fr.n7.stl.block.ast.scope.HierarchicalScope)
 	 */
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
+		if (this.attributeAssignment != null) {
+			return this.attributeAssignment.completeResolve(_scope);
+		}
 		return true;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see fr.n7.stl.block.ast.impl.VariableUseImpl#getType()
 	 */
 	@Override
 	public Type getType() {
+		if (this.attributeAssignment != null) {
+			return this.attributeAssignment.getType();
+		}
 		Type type = this.declaration.getType();
 		return type;
 		//throw new SemanticsUndefinedException("Semantics getType undefined in VariableAssignment.");
@@ -73,6 +86,9 @@ public class VariableAssignment extends AbstractIdentifier implements Assignable
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
+		if (this.attributeAssignment != null) {
+			return this.attributeAssignment.getCode(_factory);
+		}
 		Fragment f = _factory.createFragment();
 		f.add(_factory.createLoadA(Register.SB, this.declaration.getOffset()));
 		return f;
