@@ -1,23 +1,14 @@
 class A {
 	public int v;
-	
-	public int getV() {
-		return this.v;
-	}
-	
+
 	public A() {
 		this.v = 1;
 	}
-
-
 }
 
 public class Main {
-
 	public static void main(String[] args) {
-		A a1 = new A();
-		print a1.v;
-		print a1.getV();
+		A a = new A();
+		print a.w;
 	}
 }
-		

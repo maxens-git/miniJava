@@ -1,0 +1,20 @@
+class A {
+	public int v;
+
+	public int dup(int x) {
+		return x;
+	}
+
+	public int dup(int x) {
+		return x * 2;
+	}
+
+	public A() { this.v = 1; }
+}
+
+public class Main {
+	public static void main(String[] args) {
+		A a = new A();
+		print a.dup(3);
+	}
+}

@@ -64,10 +64,11 @@ public class ClassDeclaration implements Instruction, Declaration {
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
 		if (_scope.accepts(this)) {
 			_scope.register(this);
+
 			List<String> elems = new ArrayList<>();
 			for (ClassElement e : this.elements) {
 				if (elems.contains(e.getName())) {
-					Logger.error("duplicate element ");
+					Logger.error("duplicate element " + e.getName());
 					return false;
 				} else {
 					elems.add(e.getName());
@@ -111,7 +112,7 @@ public class ClassDeclaration implements Instruction, Declaration {
 			}
 			return ok;
 		}
-		
+		Logger.error("class " + this.name + " is already defined");
 		return false;
 	}
 
@@ -124,7 +125,10 @@ public class ClassDeclaration implements Instruction, Declaration {
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
 		boolean ok = true;
 		if (this.ancestor != null) {
-			ok = ok & _scope.knows(this.ancestor);
+			if (!_scope.knows(this.ancestor)) {
+				Logger.error("unknown class " + this.ancestor);
+				ok = false;
+			}
 		}
 
 		HierarchicalScope<Declaration> attributeScope = new SymbolTable(_scope);

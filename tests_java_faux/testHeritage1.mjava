@@ -1,0 +1,11 @@
+class A extends Inconnu {
+	public int v;
+	public A() { this.v = 1; }
+}
+
+public class Main {
+	public static void main(String[] args) {
+		A a = new A();
+		print a.v;
+	}
+}

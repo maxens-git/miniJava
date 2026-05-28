@@ -1,0 +1,16 @@
+class A {
+	public int v;
+	public A() { this.v = 1; }
+}
+
+class B {
+	public int w;
+	public B() { this.w = 2; }
+}
+
+public class Main {
+	public static void main(String[] args) {
+		A a = new B();
+		print a.v;
+	}
+}

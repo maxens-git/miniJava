@@ -40,17 +40,18 @@ public abstract class AbstractAttribute <ObjectKind extends Expression> implemen
 		if (nt instanceof ClassType) { 
 			ClassDeclaration cd = ((ClassType) nt).getDeclaration();
 			ClassElement e = cd.get(this.name);
-			if (e instanceof AttributeDeclaration) {
+			if (e == null) {
+				Logger.error("attribute " + this.name + " is not defined in class " + cd.getName());
+				return false;
+			} else if (e instanceof AttributeDeclaration) {
 				this.attribute = (AttributeDeclaration) e;
 			} else {
-				Logger.error("not a attrbiute declaration");
+				Logger.error(this.name + " is not an attribute");
+				return false;
 			}
 		} else {
-			Logger.error("Not a class typs"); 
-			return false; 
-		}
-		if (this.attribute == null) {
-			Logger.error("attribute not defined");
+			Logger.error("Not a class type: " + nt);
+			return false;
 		}
 		return ok;
 	}

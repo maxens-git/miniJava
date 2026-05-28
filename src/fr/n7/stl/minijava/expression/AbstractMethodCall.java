@@ -13,6 +13,7 @@ import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.minijava.ast.type.ClassType;
 import fr.n7.stl.minijava.ast.type.declaration.ClassDeclaration;
+import fr.n7.stl.minijava.ast.type.declaration.ClassElement;
 import fr.n7.stl.minijava.ast.type.declaration.MethodDeclaration;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
@@ -62,11 +63,17 @@ public abstract class AbstractMethodCall <ObjectKind extends Expression> impleme
 		for (AccessibleExpression a : this.arguments) {
 			ok &= a.completeResolve(_scope);
 		}
-		ClassDeclaration classDecl = ((ClassType) this.target.getType()).getDeclaration(); 
-		this.declaration = (MethodDeclaration) classDecl.get(this.name);
-		if (this.declaration == null) {
+		ClassDeclaration classDecl = ((ClassType) this.target.getType()).getDeclaration();
+		ClassElement elem = classDecl.get(this.name);
+		if (elem == null) {
+			Logger.error("method " + this.name + " is not defined in class " + classDecl.getName());
 			return false;
 		}
+		if (!(elem instanceof MethodDeclaration)) {
+			Logger.error(this.name + " is not a method in class " + classDecl.getName());
+			return false;
+		}
+		this.declaration = (MethodDeclaration) elem;
 		return ok;
 	}
 

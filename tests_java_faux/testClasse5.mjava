@@ -1,0 +1,14 @@
+class A {
+	public int v;
+
+	public A() {
+		this.v = true;
+	}
+}
+
+public class Main {
+	public static void main(String[] args) {
+		A a = new A();
+		print a.v;
+	}
+}

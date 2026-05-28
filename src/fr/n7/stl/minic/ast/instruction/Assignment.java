@@ -91,9 +91,13 @@ public class Assignment implements Instruction, Expression {
 	 */
 	@Override
 	public boolean checkType() {
-		//System.out.println(this.assignable.getType() + " = " + this.value.getType());
-		return this.assignable.getType().compatibleWith(this.value.getType());
-		//throw new SemanticsUndefinedException( "Semantics checkType is undefined in Assignment.");
+		Type left = this.assignable.getType();
+		Type right = this.value.getType();
+		boolean ok = left.compatibleWith(right);
+		if (!ok) {
+			Logger.error("cannot assign " + right + " to " + left);
+		}
+		return ok;
 	}
 	
 	/* (non-Javadoc)

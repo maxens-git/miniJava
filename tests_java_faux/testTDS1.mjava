@@ -1,0 +1,14 @@
+class A {
+	public int v;
+}
+
+class A {
+	public int w;
+}
+
+public class Main {
+	public static void main(String[] args) {
+		A a = new A();
+		print a.v;
+	}
+}
