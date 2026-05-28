@@ -84,18 +84,20 @@ public class ClassDeclaration implements Instruction, Declaration {
 
 			for (ClassElement e : this.elements) {
 				if (e instanceof AttributeDeclaration) {
-					
+
 				} else if (e instanceof MethodDeclaration) {
-					
+
 					HierarchicalScope<Declaration> scopeParameters = new SymbolTable(attributeScope);
+					scopeParameters.register(new ParameterDeclaration("this", new ClassType(this.name)));
 					for (ParameterDeclaration p : ((MethodDeclaration) e).parameters) {
 						scopeParameters.register(p);
-					} 
+					}
 					ok &= ((MethodDeclaration) e).body.collectAndPartialResolve(scopeParameters);
 
 				} else if (e instanceof ConstructorDeclaration) {
 
 					HierarchicalScope<Declaration> scopeParameters = new SymbolTable(attributeScope);
+					scopeParameters.register(new ParameterDeclaration("this", new ClassType(this.name)));
 					for (ParameterDeclaration p : ((ConstructorDeclaration) e).parameters) {
 						scopeParameters.register(p);
 					}
@@ -137,6 +139,7 @@ public class ClassDeclaration implements Instruction, Declaration {
             	ok &= ((AttributeDeclaration) e).getType().completeResolve(_scope);
 			} else if (e instanceof MethodDeclaration) {
 				HierarchicalScope<Declaration> scopeParameters = new SymbolTable(attributeScope);
+				scopeParameters.register(new ParameterDeclaration("this", new ClassType(this.name)));
 				for (ParameterDeclaration p : ((MethodDeclaration) e).parameters) {
 					scopeParameters.register(p);
 					ok &= p.getType().completeResolve(scopeParameters);
@@ -146,6 +149,7 @@ public class ClassDeclaration implements Instruction, Declaration {
 
 			} else if (e instanceof ConstructorDeclaration) {
 				HierarchicalScope<Declaration> scopeParameters = new SymbolTable(attributeScope);
+				scopeParameters.register(new ParameterDeclaration("this", new ClassType(this.name)));
 				for (ParameterDeclaration p : ((ConstructorDeclaration) e).parameters) {
 					scopeParameters.register(p);
 					ok &= p.getType().completeResolve(scopeParameters);
