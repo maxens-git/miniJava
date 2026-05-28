@@ -1,0 +1,13 @@
+class A {
+	public int x;
+
+	public A(int _x, int _y) {
+		this.x = _x;
+	}
+}
+
+public class Main {
+	public static void main(String[] args) {
+		A a = new A(1);
+	}
+}
