@@ -6,9 +6,12 @@ public class AttributeDeclaration extends ClassElement {
 	
 	protected Type type;
 
+	protected int offset;
+
 	public AttributeDeclaration( String _name, Type _type) {
 		super(_name);
 		this.type = _type;
+		this.offset = -1;
 	}
 
 	@Override
@@ -19,5 +22,13 @@ public class AttributeDeclaration extends ClassElement {
 	@Override
 	public String toString() {
 		return this.accessRight + " " + type + " " + this.name + ";\n"; 
+	}
+
+	public int getOffset() {
+		return this.offset;
+	}
+
+	public void setOffset(int offset) {
+		this.offset = offset;
 	}
 }
