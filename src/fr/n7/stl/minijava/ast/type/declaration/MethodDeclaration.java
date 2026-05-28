@@ -61,9 +61,9 @@ public class MethodDeclaration  extends ClassElement {
 	@Override
 	public Type getType() {
 		// TODO Auto-generated method stub
-		if (!this.body.checkType()) {
+		/*if (!this.body.checkType()) {
 			return AtomicType.ErrorType;
-		}
+		}*/
 		return this.type;
 		//throw new SemanticsUndefinedException( "aie aie aie");
 	}

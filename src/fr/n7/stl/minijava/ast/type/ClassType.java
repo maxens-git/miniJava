@@ -30,7 +30,7 @@ public class ClassType implements Type {
 	public boolean compatibleWith(Type _other) {
 		// TODO Auto-generated method stub
 		if (_other instanceof ClassType) {
-			return this.equals(_other);
+			return this.equalsTo(_other);
 		} else {
 			Logger.error(_other + " n'est pas compatible avec" + this);
 			return false;

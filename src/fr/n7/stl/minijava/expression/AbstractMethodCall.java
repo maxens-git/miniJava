@@ -41,6 +41,7 @@ public abstract class AbstractMethodCall <ObjectKind extends Expression> impleme
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
 		if (_scope.knows(this.name)) {
 			boolean ok = true;
+			this.declaration = (MethodDeclaration) _scope.get(name);
 			if (this.target != null) {
 				ok = this.target.collectAndPartialResolve(_scope);
 			}
@@ -70,7 +71,8 @@ public abstract class AbstractMethodCall <ObjectKind extends Expression> impleme
 	@Override
 	public Type getType() {
 		// TODO Auto-generated method stub
-		throw new SemanticsUndefinedException("aie aie aie");
+		return this.declaration.getType();
+		//throw new SemanticsUndefinedException("aie aie aie");
 	}
 	
 	@Override

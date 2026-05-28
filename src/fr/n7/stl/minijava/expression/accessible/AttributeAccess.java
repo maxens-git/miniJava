@@ -18,7 +18,8 @@ public class AttributeAccess extends AbstractAttribute<AccessibleExpression>  im
 	@Override
 	public Type getType() {
 		// TODO Auto-generated method stub
-		throw new SemanticsUndefinedException( "aie aie aie");
+		return this.attribute.getType();
+		//throw new SemanticsUndefinedException( "aie aie aie");
 	}
 
 	@Override

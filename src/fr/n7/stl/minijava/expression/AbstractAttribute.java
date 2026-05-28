@@ -2,12 +2,14 @@ package fr.n7.stl.minijava.expression;
 
 import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.Expression;
+import fr.n7.stl.minic.ast.expression.accessible.IdentifierAccess;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.minic.ast.type.declaration.FieldDeclaration;
 import fr.n7.stl.minijava.ast.type.ClassType;
 import fr.n7.stl.minijava.ast.type.declaration.AttributeDeclaration;
+import fr.n7.stl.minijava.ast.type.declaration.ClassDeclaration;
 import fr.n7.stl.minijava.ast.type.declaration.ClassElement;
 import fr.n7.stl.minijava.ast.type.declaration.ElementKind;
 import fr.n7.stl.tam.ast.Fragment;
@@ -27,34 +29,24 @@ public abstract class AbstractAttribute <ObjectKind extends Expression> implemen
 
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
+		
+		this.attribute = (AttributeDeclaration) _scope.get(name);
+		System.out.println(this);
 		return this.object.collectAndPartialResolve(_scope);
 	}
 
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
 		boolean ok = this.object.completeResolve(_scope);
-		System.out.println(this.object.getClass());
-		Type nt = this.object.getType();
-		if (nt instanceof ClassType) {
-			while (nt instanceof ClassType) {
-				//nt = this.object.
-			}
-		} else if (nt instanceof ClassElement) {
-			if (((ClassElement) nt).getElementKind() == ElementKind.OBJECT) {
-				this.attribute = (AttributeDeclaration) ((ClassElement) nt);
-			} else {
-				Logger.error("Attribute is not an attribute");
-			}
-		}
-		if (this.attribute == null) {
-			Logger.error("Attribute not defined");
-			return false;
-		}
 		return ok;
 	}
 
 	@Override
 	public Type getType() {
+		System.out.println(this);
+		if (this.attribute == null) {
+			Logger.error("Pas la déclaration de " + this.name);
+		}
 		// TODO Auto-generated method stub
 		return this.attribute.getType();
 	}

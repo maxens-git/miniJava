@@ -9,6 +9,7 @@ import fr.n7.stl.minic.ast.expression.assignable.AssignableExpression;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.Type;
+import fr.n7.stl.minijava.ast.type.ClassType;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.TAMFactory;
 import fr.n7.stl.util.Logger;
@@ -51,7 +52,8 @@ public class ObjectAllocation  implements AccessibleExpression, AssignableExpres
 	@Override
 	public Type getType() {
 		// TODO Auto-generated method stub
-		throw new SemanticsUndefinedException( "aie aie aie");
+		return new ClassType(name);
+		//throw new SemanticsUndefinedException( "aie aie aie");
 	}
 
 	@Override
