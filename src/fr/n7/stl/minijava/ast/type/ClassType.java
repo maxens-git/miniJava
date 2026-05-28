@@ -4,6 +4,7 @@ import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.Type;
+import fr.n7.stl.util.Logger;
 
 public class ClassType implements Type {
 	
@@ -16,13 +17,25 @@ public class ClassType implements Type {
 	@Override
 	public boolean equalsTo(Type _other) {
 		// TODO Auto-generated method stub
-		throw new SemanticsUndefinedException("aie aie aie");
+		if (_other instanceof ClassType) {
+			return this.name.equals(_other.toString().trim()); // trim pour enlever les espaces 
+		} else {
+			Logger.error(_other + " n'est pas compatible avec" + this);
+			return false;
+		}
+		//throw new SemanticsUndefinedException("aie aie aie");
 	}
 
 	@Override
 	public boolean compatibleWith(Type _other) {
 		// TODO Auto-generated method stub
-		throw new SemanticsUndefinedException("aie aie aie");
+		if (_other instanceof ClassType) {
+			return this.equals(_other);
+		} else {
+			Logger.error(_other + " n'est pas compatible avec" + this);
+			return false;
+		}
+		//throw new SemanticsUndefinedException("aie aie aie");
 	}
 
 	@Override
