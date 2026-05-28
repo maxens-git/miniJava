@@ -16,9 +16,8 @@ public class ClassType implements Type {
 
 	@Override
 	public boolean equalsTo(Type _other) {
-		// TODO Auto-generated method stub
 		if (_other instanceof ClassType) {
-			return this.name.equals(_other.toString().trim()); // trim pour enlever les espaces 
+			return this.name.equals(((ClassType)_other).name); 
 		} else {
 			Logger.error(_other + " n'est pas compatible avec" + this);
 			return false;
