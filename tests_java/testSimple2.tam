@@ -1,0 +1,10 @@
+LOADL 0
+SUBR MAlloc
+LOAD (0) 0[SB]
+LOADL 0
+SUBR IAdd
+LOADI (1)
+SUBR IOut
+POP (0) 0
+HALT
+
