@@ -78,7 +78,7 @@ public class ClassDeclaration implements Instruction, Declaration {
 			HierarchicalScope<Declaration> attributeScope = new SymbolTable(_scope);
 			for (ClassElement e : this.elements) {
 				if (e instanceof AttributeDeclaration) {
-					attributeScope.register((AttributeDeclaration) e);
+					attributeScope.register(e);
 				}
 			}
 
@@ -94,7 +94,7 @@ public class ClassDeclaration implements Instruction, Declaration {
 					ok &= ((MethodDeclaration) e).body.collectAndPartialResolve(scopeParameters);
 
 				} else if (e instanceof ConstructorDeclaration) {
-					
+
 					HierarchicalScope<Declaration> scopeParameters = new SymbolTable(attributeScope);
 					for (ParameterDeclaration p : ((ConstructorDeclaration) e).parameters) {
 						scopeParameters.register(p);
@@ -125,11 +125,18 @@ public class ClassDeclaration implements Instruction, Declaration {
 			ok = ok & _scope.knows(this.ancestor);
 		}
 
+		HierarchicalScope<Declaration> attributeScope = new SymbolTable(_scope);
+		for (ClassElement e : this.elements) {
+			if (e instanceof AttributeDeclaration) {
+				attributeScope.register(e);
+			}
+		}
+
 		for (ClassElement e : this.elements) {
 			if (e instanceof AttributeDeclaration) {
             	ok &= ((AttributeDeclaration) e).getType().completeResolve(_scope);
 			} else if (e instanceof MethodDeclaration) {
-				HierarchicalScope<Declaration> scopeParameters = new SymbolTable(_scope);
+				HierarchicalScope<Declaration> scopeParameters = new SymbolTable(attributeScope);
 				for (ParameterDeclaration p : ((MethodDeclaration) e).parameters) {
 					scopeParameters.register(p);
 					ok &= p.getType().completeResolve(scopeParameters);
@@ -138,7 +145,7 @@ public class ClassDeclaration implements Instruction, Declaration {
 				ok &= ((MethodDeclaration) e).body.completeResolve(scopeParameters);
 
 			} else if (e instanceof ConstructorDeclaration) {
-				HierarchicalScope<Declaration> scopeParameters = new SymbolTable(_scope);
+				HierarchicalScope<Declaration> scopeParameters = new SymbolTable(attributeScope);
 				for (ParameterDeclaration p : ((ConstructorDeclaration) e).parameters) {
 					scopeParameters.register(p);
 					ok &= p.getType().completeResolve(scopeParameters);
