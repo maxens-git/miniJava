@@ -15,7 +15,7 @@ public class ThisAssignment extends AbstractThis<AssignableExpression> implement
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
 		Fragment f = _factory.createFragment();
-		f.add(_factory.createLoadA(Register.LB, this.declaration.getOffset()));
+		f.add(_factory.createLoad(Register.LB, this.declaration.getOffset(), 1));
 		return f;
 	}
 

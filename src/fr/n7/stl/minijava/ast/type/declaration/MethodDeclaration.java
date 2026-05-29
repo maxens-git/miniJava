@@ -79,9 +79,15 @@ public class MethodDeclaration extends ClassElement {
 	}
 
 	public boolean checkType() {
+		int tailleParam = 1;
+		for (ParameterDeclaration p : this.parameters) {
+			tailleParam += p.getType().length();
+		}
 		for (Instruction instr : this.body.getInstructions()) {
 			if (instr instanceof Return) {
-				((Return) instr).setReturnType(type);
+				Return r = (Return) instr;
+				r.setReturnType(this.type);
+				r.setExpectedParamSize(tailleParam);
 			}
 		}
 		return this.body.checkType();

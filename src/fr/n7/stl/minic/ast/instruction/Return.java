@@ -31,6 +31,8 @@ public class Return implements Instruction {
 
 	protected Type returnType;
 
+	protected int expectedParamSize = -1;
+
 	public Return(Expression _value) {
 		this.value = _value;
 		this.function = null;
@@ -81,14 +83,13 @@ public class Return implements Instruction {
 			return this.function.getType().compatibleWith(this.value.getType());
 		}
 		if (this.returnType != null) {
-			boolean ok = this.returnType.compatibleWith(this.value.getType());
-			if (ok) {
-				return false;
-			} else {
-				Logger.error(this.returnType + " is not compatible with " + this.value.getType());
+			boolean ok = this.value.getType().compatibleWith(this.returnType);
+			if (!ok) {
+				Logger.error(this.value.getType() + " is not compatible with " + this.returnType);
 			}
+			return ok;
 		}
-    return true;
+		return true;
 		//throw new SemanticsUndefinedException("Semantics checkType undefined in Return.");
 	}
 
@@ -113,8 +114,18 @@ public class Return implements Instruction {
 				tailleParam = tailleParam + param.getType().length();
 			}
 			f.add(_factory.createReturn(this.value.getType().length(), tailleParam));
+		} else if (this.expectedParamSize >= 0) {
+			f.add(_factory.createReturn(this.value.getType().length(), this.expectedParamSize));
 		}
 		return f;
+	}
+
+	public int getExpectedParamSize() {
+		return expectedParamSize;
+	}
+
+	public void setExpectedParamSize(int expectedParamSize) {
+		this.expectedParamSize = expectedParamSize;
 	}
 
 	public Type getReturnType() {
