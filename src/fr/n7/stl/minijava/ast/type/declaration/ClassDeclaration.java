@@ -186,9 +186,9 @@ public class ClassDeclaration implements Instruction, Declaration {
 				}
 			}
 			if (element instanceof MethodDeclaration) {
-				ok &= ((MethodDeclaration) element).body.checkType();
+				ok &= ((MethodDeclaration) element).checkType();
 			} else if (element instanceof ConstructorDeclaration) {
-				ok &= ((ConstructorDeclaration) element).body.checkType();
+				ok &= ((ConstructorDeclaration) element).checkType();
 			}
 		}
 		return ok;

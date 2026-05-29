@@ -32,6 +32,10 @@ public class Block {
 	 */
 	protected List<Instruction> instructions;
 
+	public List<Instruction> getInstructions() {
+		return instructions;
+	}
+
 	protected HierarchicalScope<Declaration> scope;
 
 	protected int length;

@@ -12,9 +12,11 @@ import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
 import fr.n7.stl.minic.ast.instruction.declaration.ParameterDeclaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
+import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.util.Logger;
 
 /**
  * Implementation of the Abstract Syntax Tree node for a return instruction.
@@ -26,6 +28,8 @@ public class Return implements Instruction {
 	protected Expression value;
 	
 	protected FunctionDeclaration function;
+
+	protected Type returnType;
 
 	public Return(Expression _value) {
 		this.value = _value;
@@ -76,8 +80,15 @@ public class Return implements Instruction {
 		if (this.function != null) {
 			return this.function.getType().compatibleWith(this.value.getType());
 		}
-		System.out.println("Attention pas de function");
-		return true;
+		if (this.returnType != null) {
+			boolean ok = this.returnType.compatibleWith(this.value.getType());
+			if (ok) {
+				return false;
+			} else {
+				Logger.error(this.returnType + " is not compatible with " + this.value.getType());
+			}
+		}
+    return true;
 		//throw new SemanticsUndefinedException("Semantics checkType undefined in Return.");
 	}
 
@@ -106,4 +117,11 @@ public class Return implements Instruction {
 		return f;
 	}
 
+	public Type getReturnType() {
+		return returnType;
+	}
+
+	public void setReturnType(Type returnType) {
+		this.returnType = returnType;
+	}
 }

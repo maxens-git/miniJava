@@ -56,11 +56,11 @@ public class ConstructorDeclaration extends ClassElement {
 
 	@Override
 	public Type getType() {
-		/*if (!this.body.checkType()) {
-			return AtomicType.ErrorType;
-		}*/
 		return AtomicType.VoidType;
-		//throw new SemanticsUndefinedException( "aie aie aie");
+	}
+
+	public boolean checkType() {
+		return this.body.checkType();
 	}
 
 	@Override
