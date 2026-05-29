@@ -10,7 +10,8 @@
 
 	<path id="libraries">
 		<files includes="${tools}/java-cup-11b-runtime.jar" />
-		<files includes="${tools}/commons-text-1.2.jar" />
+		<files includes="${tools}/commons-text-1.9.jar" />
+		<files includes="${tools}/commons-lang3-3.12.0.jar" />
 		<files includes="${tools}/antlr-4.13.1-complete.jar" />
 	</path>
 
