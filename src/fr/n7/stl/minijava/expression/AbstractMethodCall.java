@@ -12,6 +12,7 @@ import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.minijava.ast.type.ClassType;
+import fr.n7.stl.minijava.ast.type.declaration.AccessRight;
 import fr.n7.stl.minijava.ast.type.declaration.ClassDeclaration;
 import fr.n7.stl.minijava.ast.type.declaration.ClassElement;
 import fr.n7.stl.minijava.ast.type.declaration.MethodDeclaration;
@@ -74,7 +75,25 @@ public abstract class AbstractMethodCall <ObjectKind extends Expression> impleme
 			return false;
 		}
 		this.declaration = (MethodDeclaration) elem;
+		if (!isAccessible(this.declaration.getAccessRight(), classDecl, _scope)) {
+			Logger.error("object " + this.name + " is not accessible from " + classDecl.getName());
+			return false;
+		}
 		return ok;
+	}
+
+	public boolean isAccessible(AccessRight right, ClassDeclaration classDecl, HierarchicalScope<Declaration> _scope) {
+		if (right == AccessRight.PUBLIC || right == AccessRight.PACKAGE) {
+			return true;
+		}
+		ClassDeclaration current = null;
+		if (_scope.knows("this")) {
+			Type tt = _scope.get("this").getType();
+			if (tt instanceof ClassType) {
+				current = ((ClassType) tt).getDeclaration();
+			}
+		}
+		return current != null && classDecl != null && current.getName().equals(classDecl.getName());
 	}
 
 	@Override
