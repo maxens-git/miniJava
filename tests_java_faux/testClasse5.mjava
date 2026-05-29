@@ -12,3 +12,4 @@ public class Main {
 		print a.v;
 	}
 }
+// Erreur attendue : Typage, int /= boolean

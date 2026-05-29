@@ -9,3 +9,4 @@ public class Main {
         print a1.v;
     }
 }
+// Résultat attendu : 0

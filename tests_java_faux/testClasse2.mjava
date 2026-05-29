@@ -12,3 +12,4 @@ public class Main {
 		print a.w;
 	}
 }
+// Erreur attendue : TDS, a.w inconnu

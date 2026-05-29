@@ -4,3 +4,4 @@ public class Main {
 		print b;
 	}
 }
+// Erreur attendue : TDS, B inconnu

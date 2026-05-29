@@ -5,3 +5,4 @@ public class Main {
 		print i;
 	}
 }
+// Erreur attendue : Typage int /= boolean

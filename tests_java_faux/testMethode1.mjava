@@ -16,3 +16,4 @@ public class Main {
 		print a.unknownMethod();
 	}
 }
+// Erreur attendue : TDS, unknownMethod inconnu

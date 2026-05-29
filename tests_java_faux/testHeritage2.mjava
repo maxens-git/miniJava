@@ -14,3 +14,4 @@ public class Main {
 		print b.z;
 	}
 }
+// Erreur attendue : TDS, b.z inconnu

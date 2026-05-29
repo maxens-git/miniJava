@@ -18,3 +18,4 @@ public class Main {
 		print a.dup(3);
 	}
 }
+// Erreur attendue : TDS, dub en double

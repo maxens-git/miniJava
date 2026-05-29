@@ -16,3 +16,4 @@ public class Main {
 		a.setX(true);
 	}
 }
+// Erreur attendue : TDS, setX(boolean) inconnu

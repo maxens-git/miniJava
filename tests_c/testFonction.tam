@@ -1,6 +1,28 @@
-CALL (SB) function_getA
+JUMP fin_declarations
+;(j + 1)
+function_incr
+LOAD (1) -1[LB]
+LOADL 1
+SUBR IAdd
 LOAD (1) 0[SB]
+RETURN (1) 1
+POP (0) 0
+;(i - 1)
+function_decr
+LOAD (1) -1[LB]
+LOADL 1
+SUBR ISub
+RETURN (1) 1
+POP (0) 0
+fin_declarations
+LOADL 3
+LOAD (1) 0[SB]
+CALL (SB) function_incr
+LOAD (1) 1[SB]
 SUBR IOut
-POP (0) 1
+LOAD (1) 0[SB]
+CALL (SB) function_decr
+SUBR IOut
+POP (0) 2
 HALT
 
