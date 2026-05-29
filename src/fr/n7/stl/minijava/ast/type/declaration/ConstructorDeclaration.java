@@ -18,6 +18,18 @@ public class ConstructorDeclaration extends ClassElement {
 	
 	protected Block body;
 
+	protected ParameterDeclaration thisParam;
+
+	protected String label;
+
+	public String getLabel() {
+		return this.label;
+	}
+	
+	public List<ParameterDeclaration> getParameters() {
+		return this.parameters;
+	}
+
 	public ConstructorDeclaration(String _name, List<ParameterDeclaration> _parameters, Block _body) {
 		super( _name);
 		this.parameters = _parameters;
@@ -53,7 +65,15 @@ public class ConstructorDeclaration extends ClassElement {
 
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		return this.body.getCode(_factory);
-		//throw new SemanticsUndefinedException( "Semantics get code is undefined in ClassDeclaration.");
+		Fragment f = this.body.getCode(_factory);
+		int tailleParam = 1; 
+		for (ParameterDeclaration p : this.parameters) {
+			tailleParam += p.getType().length();
+		}
+		f.add(_factory.createReturn(0, tailleParam));
+		if (this.label != null) {
+			f.addPrefix(this.label);
+		}
+		return f;
 	}
 }

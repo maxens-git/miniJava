@@ -7,6 +7,7 @@ import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.minijava.expression.AbstractAttribute;
 import fr.n7.stl.tam.ast.Fragment;
+import fr.n7.stl.tam.ast.Library;
 import fr.n7.stl.tam.ast.TAMFactory;
 
 public class AttributeAssignment extends AbstractAttribute<AssignableExpression> implements AssignableExpression {
@@ -17,8 +18,11 @@ public class AttributeAssignment extends AbstractAttribute<AssignableExpression>
 
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		// TODO Auto-generated method stub
-		throw new SemanticsUndefinedException( "aie aie aie");
+		Fragment f = _factory.createFragment();
+		f.append(this.object.getCode(_factory));
+		f.add(_factory.createLoadL(this.attribute.getOffset()));
+		f.add(Library.IAdd);
+		return f;
 	}
 
 }

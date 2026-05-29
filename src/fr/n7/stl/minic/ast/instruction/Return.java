@@ -96,13 +96,14 @@ public class Return implements Instruction {
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
 		Fragment f = this.value.getCode(_factory);
-		int tailleParam = 0;
-		for (ParameterDeclaration param : this.function.getParameters()) {
-			tailleParam = tailleParam + param.getType().length();
+		if (this.function != null) {
+			int tailleParam = 0;
+			for (ParameterDeclaration param : this.function.getParameters()) {
+				tailleParam = tailleParam + param.getType().length();
+			}
+			f.add(_factory.createReturn(this.value.getType().length(), tailleParam));
 		}
-		f.add(_factory.createReturn(this.value.getType().length(), tailleParam));
 		return f;
-		//throw new SemanticsUndefinedException("Semantics getCode undefined in Return.");
 	}
 
 }

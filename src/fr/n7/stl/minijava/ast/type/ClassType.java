@@ -26,12 +26,12 @@ public class ClassType implements Type {
 	@Override
 	public boolean equalsTo(Type _other) {
 		if (_other instanceof ClassType) {
-			return this.name.equals(((ClassType)_other).name); 
+			return this.name.equals(((ClassType) _other).name);
 		} else {
 			Logger.error(_other + " n'est pas compatible avec" + this);
 			return false;
 		}
-		//throw new SemanticsUndefinedException("aie aie aie");
+		// throw new SemanticsUndefinedException("aie aie aie");
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class ClassType implements Type {
 			Logger.error(_other + " n'est pas compatible avec" + this);
 			return false;
 		}
-		//throw new SemanticsUndefinedException("aie aie aie");
+		// throw new SemanticsUndefinedException("aie aie aie");
 	}
 
 	@Override
@@ -53,8 +53,8 @@ public class ClassType implements Type {
 
 	@Override
 	public int length() {
-		// TODO Auto-generated method stub
-		return 0;
+
+		return 1;
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class ClassType implements Type {
 			}
 		}
 	}
-	
+
 	public String toString() {
 		return " " + this.name + " ";
 	}

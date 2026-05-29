@@ -28,8 +28,17 @@ public class MethodCallAccess extends AbstractMethodCall<AccessibleExpression> i
 
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		// TODO Auto-generated method stub
-		throw new SemanticsUndefinedException( "aie aie aie");
+		Fragment f = _factory.createFragment();
+		if (this.target != null) {
+			f.append(this.target.getCode(_factory));
+		}
+		for (AccessibleExpression arg : this.arguments) {
+			f.append(arg.getCode(_factory));
+		}
+		if (this.declaration.getLabel() != null) {
+			f.add(_factory.createCall(this.declaration.getLabel(), Register.SB));
+		}
+		return f;
 	}
 	
 }

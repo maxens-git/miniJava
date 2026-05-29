@@ -16,6 +16,7 @@ import fr.n7.stl.minic.ast.scope.SymbolTable;
 import fr.n7.stl.minic.ast.type.AtomicType;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.minijava.ast.type.ClassType;
+import fr.n7.stl.util.Logger;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
@@ -25,13 +26,17 @@ import fr.n7.stl.util.Logger;
  * 
  */
 public class ClassDeclaration implements Instruction, Declaration {
-	
+
 	protected List<ClassElement> elements;
-	
+
+	public List<ClassElement> getElements() {
+		return this.elements;
+	}
+
 	protected boolean concrete;
-	
+
 	protected String name;
-	
+
 	protected String ancestor;
 
 	/**
@@ -43,22 +48,22 @@ public class ClassDeclaration implements Instruction, Declaration {
 		this.ancestor = _ancestor;
 		this.elements = _elements;
 	}
-	
+
 	/**
 	 * 
 	 */
 	public ClassDeclaration(boolean _concrete, String _name, List<ClassElement> _elements) {
-		this( _concrete, _name, null, _elements);
+		this(_concrete, _name, null, _elements);
 	}
-	
+
 	public ClassElement get(String classElemName) {
-        for (ClassElement e : this.elements) {
-            if (e.getName().equals(classElemName)) {
+		for (ClassElement e : this.elements) {
+			if (e.getName().equals(classElemName)) {
 				return e;
 			}
-        }
-        return null;
-    }
+		}
+		return null;
+	}
 
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
@@ -118,7 +123,7 @@ public class ClassDeclaration implements Instruction, Declaration {
 
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope, FunctionDeclaration _container) {
-		throw new SemanticsUndefinedException( "Semantics resolve is undefined in ClassDeclaration.");
+		throw new SemanticsUndefinedException("Semantics resolve is undefined in ClassDeclaration.");
 	}
 
 	@Override
@@ -140,7 +145,7 @@ public class ClassDeclaration implements Instruction, Declaration {
 
 		for (ClassElement e : this.elements) {
 			if (e instanceof AttributeDeclaration) {
-            	ok &= ((AttributeDeclaration) e).getType().completeResolve(_scope);
+				ok &= ((AttributeDeclaration) e).getType().completeResolve(_scope);
 			} else if (e instanceof MethodDeclaration) {
 				HierarchicalScope<Declaration> scopeParameters = new SymbolTable(attributeScope);
 				scopeParameters.register(new ParameterDeclaration("this", new ClassType(this)));
@@ -166,7 +171,8 @@ public class ClassDeclaration implements Instruction, Declaration {
 		}
 
 		return ok;
-		//throw new SemanticsUndefinedException( "Semantics resolve is undefined in ClassDeclaration.");
+		// throw new SemanticsUndefinedException( "Semantics resolve is undefined in
+		// ClassDeclaration.");
 	}
 
 	@Override
@@ -178,7 +184,7 @@ public class ClassDeclaration implements Instruction, Declaration {
 				if ((AtomicType) typeElem == AtomicType.ErrorType) {
 					return false;
 				}
-			} 
+			}
 			if (element instanceof MethodDeclaration) {
 				ok &= ((MethodDeclaration) element).body.checkType();
 			} else if (element instanceof ConstructorDeclaration) {
@@ -190,21 +196,53 @@ public class ClassDeclaration implements Instruction, Declaration {
 
 	@Override
 	public int allocateMemory(Register _register, int _offset) {
+		// Calcul des offsets pour les attributs (dans le tas)
 		int attributeOffset = 0;
-		int nbMots = 3;
 		for (ClassElement e : this.elements) {
 			if (e instanceof AttributeDeclaration) {
 				int length = e.getType().length();
 				((AttributeDeclaration) e).setOffset(attributeOffset);
 				attributeOffset += length;
-			} else if (e instanceof MethodDeclaration) {
-				((MethodDeclaration) e).body.allocateMemory(Register.LB, _offset + nbMots);
+			}
+		}
+
+		int nbMots = 3;
+		for (ClassElement e : this.elements) {
+			if (e instanceof MethodDeclaration) {
+				MethodDeclaration method = (MethodDeclaration) e;
+				method.label = "method_" + this.name + "_" + method.getName();
+				int totalParamSize = 1;
+				for (ParameterDeclaration p : method.parameters) {
+					totalParamSize += p.getType().length();
+				}
+				int paramOffset = -totalParamSize;
+				method.thisParam = new ParameterDeclaration("this", new ClassType(this));
+				method.thisParam.setOffset(paramOffset);
+				paramOffset += 1;
+				for (ParameterDeclaration p : method.parameters) {
+					p.setOffset(paramOffset);
+					paramOffset += p.getType().length();
+				}
+				method.body.allocateMemory(Register.LB, nbMots);
 			} else if (e instanceof ConstructorDeclaration) {
-				((ConstructorDeclaration) e).body.allocateMemory(Register.LB, _offset + nbMots);
+				ConstructorDeclaration constructor = (ConstructorDeclaration) e;
+				constructor.label = "constructor_" + this.name + "_" + constructor.parameters.size();
+				int totalParamSize = 1;
+				for (ParameterDeclaration p : constructor.parameters) {
+					totalParamSize += p.getType().length();
+				}
+				int paramOffset = -totalParamSize;
+				constructor.thisParam = new ParameterDeclaration("this", new ClassType(this));
+				constructor.thisParam.setOffset(paramOffset);
+				paramOffset += 1;
+				for (ParameterDeclaration p : constructor.parameters) {
+					p.setOffset(paramOffset);
+					paramOffset += p.getType().length();
+				}
+				constructor.body.allocateMemory(Register.LB, nbMots);
 			}
 		}
 		return 0;
-		//throw new SemanticsUndefinedException( "Semantics allocation memory is undefined in ClassDeclaration.");
 	}
 
 	@Override
@@ -214,7 +252,8 @@ public class ClassDeclaration implements Instruction, Declaration {
 			f.append(e.getCode(_factory));
 		}
 		return f;
-		//throw new SemanticsUndefinedException( "Semantics get code is undefined in ClassDeclaration.");
+		// throw new SemanticsUndefinedException( "Semantics get code is undefined in
+		// ClassDeclaration.");
 	}
 
 	@Override
@@ -227,11 +266,11 @@ public class ClassDeclaration implements Instruction, Declaration {
 		// TODO Auto-generated method stub
 		return new ClassType(name);
 	}
-	
+
 	@Override
 	public String toString() {
 		String image = "";
-		if (! this.concrete) {
+		if (!this.concrete) {
 			image += "abstract ";
 		}
 		image += "class " + this.name + " ";

@@ -82,15 +82,25 @@ public class MainDeclaration implements Instruction {
 
 	@Override
 	public int allocateMemory(Register _register, int _offset) {
+		for (Declaration d : this.declarations) {
+			if (d instanceof DeclarationInstruction) {
+				((DeclarationInstruction) d).allocateMemory(_register, _offset);
+			}
+		}
 		this.main.allocateMemory(_register, _offset);
 		return 0;
 	}
 
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		// TODO Auto-generated method stub
-		return this.main.getCode(_factory);
-		//throw new SemanticsUndefinedException( "aie aie aie");
+		Fragment f = _factory.createFragment();
+		for (Declaration d : this.declarations) {
+			if (d instanceof DeclarationInstruction) {
+				f.append(((DeclarationInstruction) d).getCode(_factory));
+			}
+		}
+		f.append(this.main.getCode(_factory));
+		return f;
 	}
 	
 	public String getName() {
