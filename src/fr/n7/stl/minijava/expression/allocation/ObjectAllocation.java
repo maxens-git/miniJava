@@ -6,6 +6,7 @@ import java.util.List;
 import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.accessible.AccessibleExpression;
 import fr.n7.stl.minic.ast.expression.assignable.AssignableExpression;
+import fr.n7.stl.minic.ast.instruction.declaration.ParameterDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.Type;
@@ -63,20 +64,53 @@ public class ObjectAllocation  implements AccessibleExpression, AssignableExpres
 				this.classDeclaration = (ClassDeclaration) decl;
 			}
 		}
-		// Trouver le constructeur correspondant au nombre d'arguments
-		if (this.classDeclaration != null) {
-			for (ClassElement e : this.classDeclaration.getElements()) {
-				if (e instanceof ConstructorDeclaration) {
-					ConstructorDeclaration ctor = (ConstructorDeclaration) e;
-					if (ctor.getParameters().size() == this.arguments.size()) {
-						this.constructor = ctor;
-						break;
-					}
-				}
-			}
-		}
 		for (AccessibleExpression a : this.arguments) {
 			ok = ok && a.completeResolve(_scope);
+		}
+		if (!ok) {
+			return false;
+		}
+		if (this.classDeclaration != null) {
+			boolean hasConstructor = false;
+			boolean isNumberOfArgCorrect = false;
+			for (ClassElement e : this.classDeclaration.getElements()) {
+				if (e instanceof ConstructorDeclaration) {
+					hasConstructor = true;
+					
+					ConstructorDeclaration constructor = (ConstructorDeclaration) e;
+					List<ParameterDeclaration> params = constructor.getParameters();
+					
+					if (params.size() == this.arguments.size()) {
+						isNumberOfArgCorrect = true;
+						boolean typesOk = true;
+						for (int i = 0; i < params.size(); i++) {
+							Type expected = params.get(i).getType();
+							Type actual = this.arguments.get(i).getType();
+							if (!actual.compatibleWith(expected)) {
+								typesOk = false;
+								break;
+							}
+						}
+						if (typesOk) {
+							this.constructor = constructor;
+							break;
+						}
+					}
+					
+				}
+				
+			}
+			if (this.constructor == null) {
+				if (!hasConstructor && this.arguments.size() == 0) {
+					return ok;
+				} else if (!isNumberOfArgCorrect) {
+					Logger.error("No constructor of " + this.name + " accepts " + this.arguments.size() + " arguments");
+					return false;
+				} else {
+					Logger.error(this.name + "constructor do not accept these types");
+					return false;
+				}
+			}
 		}
 		return ok;
 	}
