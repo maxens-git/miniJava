@@ -1,0 +1,9 @@
+public class Main {
+	public static void main(String[] args) {
+		int i = 3;
+		if (i) {
+			print 1;
+		}
+	}
+}
+// Erreur attendue : Typage, condition du si : int /= boolean

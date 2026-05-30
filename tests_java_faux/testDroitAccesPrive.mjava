@@ -1,0 +1,15 @@
+class A {
+	private int secret;
+
+	public A() {
+		this.secret = 42;
+	}
+}
+
+public class Main {
+	public static void main(String[] args) {
+		A a = new A();
+		print a.secret;
+	}
+}
+// Erreur attendue : Droits d'accès, attribut secret privé non accessible depuis Main

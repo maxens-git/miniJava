@@ -1,0 +1,19 @@
+class A {
+	public int n;
+	public boolean actif;
+
+	public A() {
+		this.n = 0;
+		this.actif = true;
+	}
+}
+
+public class Main {
+
+	public static void main(String[] args) {
+		A d = new A();
+		print d.n;
+		print d.actif;
+	}
+}
+// Résultat attendu : 01

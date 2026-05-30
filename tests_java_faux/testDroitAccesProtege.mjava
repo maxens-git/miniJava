@@ -1,0 +1,15 @@
+class A {
+	protected int v;
+
+	public A() {
+		this.v = 1;
+	}
+}
+
+public class Main {
+	public static void main(String[] args) {
+		A a = new A();
+		print a.v;
+	}
+}
+// Erreur attendue : Droits d'accès, attribut v protégé non accessible depuis Main

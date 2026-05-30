@@ -1,0 +1,19 @@
+class A {
+	public int v;
+
+	public A() {
+		this.v = 1;
+	}
+
+	private int secret() {
+		return 9;
+	}
+}
+
+public class Main {
+	public static void main(String[] args) {
+		A a = new A();
+		print a.secret();
+	}
+}
+// Erreur attendue : Droits d'accès, méthode secret privée non accessible depuis Main
