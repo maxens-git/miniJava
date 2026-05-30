@@ -90,7 +90,7 @@ public class VariableAssignment extends AbstractIdentifier implements Assignable
 			return this.attributeAssignment.getCode(_factory);
 		}
 		Fragment f = _factory.createFragment();
-		f.add(_factory.createLoadA(Register.SB, this.declaration.getOffset()));
+		f.add(_factory.createLoadA(this.declaration.getRegister(), this.declaration.getOffset()));
 		return f;
 		//throw new SemanticsUndefinedException("Semantics getCode undefined in VariableAssignment.");
 	}
