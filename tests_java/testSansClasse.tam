@@ -1,5 +1,5 @@
-JUMP fin_declarations
-fin_declarations
+JUMP fin_declaration_des_classes
+fin_declaration_des_classes
 LOADL 5
 LOADL 1
 SUBR IMul

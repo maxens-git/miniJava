@@ -1,5 +1,5 @@
-JUMP fin_declarations
-fin_declarations
+JUMP fin_declaration_des_classes
+fin_declaration_des_classes
 LOADL 1
 SUBR MAlloc
 LOAD (1) 0[SB]

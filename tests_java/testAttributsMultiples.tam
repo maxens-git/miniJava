@@ -1,4 +1,4 @@
-JUMP fin_declarations
+JUMP fin_declaration_des_classes
 constructor_A_0
 LOADL 0
 LOAD (1) -1[LB]
@@ -12,7 +12,7 @@ SUBR IAdd
 STOREI (1)
 POP (0) 0
 RETURN (0) 1
-fin_declarations
+fin_declaration_des_classes
 LOADL 2
 SUBR MAlloc
 LOAD (1) -1[ST]
