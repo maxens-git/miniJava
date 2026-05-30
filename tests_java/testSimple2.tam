@@ -1,0 +1,12 @@
+JUMP fin_declarations
+fin_declarations
+LOADL 1
+SUBR MAlloc
+LOAD (1) 0[SB]
+LOADL 0
+SUBR IAdd
+LOADI (1)
+SUBR IOut
+POP (0) 1
+HALT
+

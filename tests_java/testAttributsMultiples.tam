@@ -1,0 +1,32 @@
+JUMP fin_declarations
+constructor_A_0
+LOADL 0
+LOAD (1) -1[LB]
+LOADL 0
+SUBR IAdd
+STOREI (1)
+LOADL 1
+LOAD (1) -1[LB]
+LOADL 1
+SUBR IAdd
+STOREI (1)
+POP (0) 0
+RETURN (0) 1
+fin_declarations
+LOADL 2
+SUBR MAlloc
+LOAD (1) -1[ST]
+CALL (SB) constructor_A_0
+LOAD (1) 0[SB]
+LOADL 0
+SUBR IAdd
+LOADI (1)
+SUBR IOut
+LOAD (1) 0[SB]
+LOADL 1
+SUBR IAdd
+LOADI (1)
+SUBR IOut
+POP (0) 1
+HALT
+
